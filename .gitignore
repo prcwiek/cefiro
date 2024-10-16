@@ -20,6 +20,9 @@
 
 # RStudio files
 .Rproj.user/
+.Rproj
+cefiro.Rproj
+.Rbuildignore
 
 # produced vignettes
 vignettes/*.html
@@ -47,3 +50,7 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# ignore all files in a directory others
+others/
+inst/doc
