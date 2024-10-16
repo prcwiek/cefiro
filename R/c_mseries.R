@@ -1,0 +1,310 @@
+#'  c_mseries
+#'
+#' Create c_mseries object with data and information about wind measurement.
+#' The output c_mseries object consists of:
+#' \itemize{
+#' \item mdata in xts Time-Series Object  with wind measurement data
+#' \item t_index with dates
+#' \item start_date, a start date of measurement data
+#' \item end_date, an end date of measurement data
+#' \item wind_speed, names and heights of measured wind speed signals
+#' \item wind_dir, names and heights of measured wind direction signals
+#' \item wind_sd, names and heights of measured standard deviation
+#' \item temp, names and heights of temperature measured signals
+#' \item pressure, names and heights of winn speed measured signals
+#' \item main_wind_speed, main wind speed measured signal
+#' \item wind_dir, main wind direction measured signals
+#' }
+#'
+#' @param mdata data frame; wind measurements data, names of columns are required.
+#' @param date_col character; name of column with dates and hours.\cr
+#' A selected column should be POSIXct.
+#' @param ws_col character; vector with names of columns with wind speed signals.
+#' @param ws_dir character; vector with names of columns with wind direction signals.
+#' @param ws_h numeric; vector with heights of wind speed signals.
+#' @param wd_h numeric; vector with heights of wind direction signals.
+#' @param sd_col character; vector with names of columns with standard deviation of\cr
+#' wind speed signals.
+#' @param t_col character; vector with names of columns with temperature signals.
+#' @param t_h numeric; vector with heights of temperature signals.
+#' @param p_col character; vector with names of columns with pressure signals.
+#' @param p_c  numeric; vector with heights of pressure signals.
+#' @param ws_main character; name of main wind speed signal. If NULL, the highest\cr
+#' signal will be selected.
+#' @param wd_main character; name of main wind direction signal. If NULL, the highest\cr
+#' signal will be selected.
+#' @param name character; name of measurement site.
+#' @param tzone character; tzone = "UTC"
+#'
+#' @return c_mseries object with measurement data and information about a measurement site
+#'
+#' @examples
+#' \dontrun{
+#' # Creating c_mseries object from the din data frame where
+#' # the column DateTime consists of the time stamps in
+#' the format 1999-01-01 00:10:00:
+#' ds <- c_mseries(mdata = din, date_col = "DateTime",
+#' ws_col = c("WS125", "WS77", "WS44"), wd_col = c("WD77", "WD125"),
+#' ws_h = c(125, 77, 44), wd_h = c(77, 125),
+#' t_col = c("T3", "T44", "T118"), t_h = c(3, 44, 118),
+#' p_col = "P8", p_h = 8,
+#' name = "Test mast")
+#' }
+#'
+#' @export
+c_mseries <- function(mdata, ...) {
+  UseMethod("c_mseries")
+}
+
+#' @export
+c_mseries.default <- function(mdata = NULL, date_col = NULL,
+                              ws_col = NULL, wd_col = NULL, ws_h = NULL, wd_h = NULL,
+                              sd_col = NULL,
+                              t_col = NULL, t_h = NULL,
+                              p_col = NULL, p_h = NULL,
+                              ws_main = NULL, wd_main = NULL,
+                              name = NULL, tzone = "UTC", ...) {
+
+  # check if mdata is a data frame
+  if (!is.data.frame(mdata)) {
+    stop("cefiro package error: Parameter mdata is not a data frame!", call. = FALSE)
+  }
+  # check if date_col is not NULL
+  if (is.null(date_col)) {
+    stop("cefiro package error: Parameter date_col is NULL. Please select a column!", call. = FALSE)
+  }
+  # check if date_col column exists and it is POSIXct
+  if (date_col %in% names(mdata)) {
+    t <- as.data.frame(mdata[1, date_col])
+    if (!xts::is.timeBased(t[1,1])) {
+      stop(paste0("cefiro package error: date_col ", date_col, " is not a time-based R class"), call. = FALSE)
+    }
+  } else {
+    stop(paste0("cefiro package error: date_col = ", date_col, " does not exist!"), call. = FALSE)
+  }
+
+  # create time series
+  mdata <- as.data.frame(mdata)
+  t_index <-  mdata[, date_col]
+  n_index <- names(mdata)[which(names(mdata) != date_col)]
+  mdata <- subset(mdata, select = n_index)
+  dout <- xts::xts(mdata, order.by = t_index, tzone = tzone)
+
+  # check if a created time series has all records
+  # if not then create lines in NA
+  t_start = min(t_index)
+  t_end = max(t_index)
+  t_period = round(as.numeric((t_end - t_start)), 0)*24*6
+  check_index <- seq(t_start, t_end, 600)
+  dcheck <- xts::xts(c(1:t_period), order.by = check_index, tzone = tzone)
+  dout <- cbind(dout, dcheck)
+  dout <- dout[, n_index]
+
+  wind_speed <- as.list(setNames(ws_h, ws_col))
+  wind_dir <- as.list(setNames(wd_h, wd_col))
+  wind_sd <- as.list(setNames(ws_h, sd_col))
+
+  if (is.null(ws_main)) {
+    main_wind_speed <- names(which.max(wind_speed))
+  } else {
+    main_wind_speed <- ws_main
+  }
+  if (is.null(wd_main)) {
+    main_wind_dir <- names(which.max(wind_dir))
+  } else {
+    main_wind_dir <- wd_main
+  }
+
+  structure(list(mdata = dout, t_index = t_index,
+                 start_date = t_start, end_date = t_end,
+                 wind_speed = wind_speed,
+                 wind_dir = wind_dir,
+                 wind_sd = wind_sd,
+                 temp = as.list(setNames(t_h, t_col)),
+                 pressure = as.list(setNames(p_h, p_col)),
+                 main_wind_speed = main_wind_speed, main_wind_dir = main_wind_dir,
+                 name = name,
+                 tzone = tzone), class = "c_mseries")
+}
+
+#' @export
+is.c_mseries <- function(cx) {
+  inherits(cx, "c_mseries")
+}
+
+#' @export
+print.c_mseries <- function(cx,..) {
+  if (!is.c_mseries(cx)) {
+    stop("cefiro package error: Invalid input format! Argument is not a m_series object.", call. = FALSE)
+  }
+  cat("Measurement time series: ", cx$name," \n")
+  #cat(sprintf("Start date: %s \n", as.character(cx$start_date, format = "%Y-%m-%d %H:%M:%S")))
+  cat(sprintf("Start date: %s \n", as.character(format(cx$start_date, format = "%Y-%m-%d %H:%M:%S"))))
+  #cat(sprintf("End date: %s \n", as.character(cx$end_date, format = "%Y-%m-%d %H:%M:%S")))
+  cat(sprintf("End date: %s \n", as.character(format(cx$end_date, format = "%Y-%m-%d %H:%M:%S"))))
+  cat("------------------------------\n")
+  cat(sprintf("Wind speed signal %s measured at height: %.2f\n", names(cx$wind_speed), unlist(unname(cx$wind_speed))),
+      sep = "")
+  cat(sprintf("Wind direction signal %s measured at height: %.2f\n", names(cx$wind_dir), unlist(unname(cx$wind_dir))),
+      sep = "")
+  cat(sprintf("Temperature signal %s measured at height: %.2f\n", names(cx$temp), unlist(unname(cx$temp))),
+      sep = "")
+  cat(sprintf("Pressure signal %s measured at height: %.2f\n", names(cx$pressure), unlist(unname(cx$pressure))),
+      sep = "")
+  cat("------------------------------\n")
+  cat("Main wind speed signal ", cx$main_wind_speed, "\n")
+  cat("Main wind direction signal ", cx$main_wind_dir, "\n")
+  cat("\n")
+}
+
+#' @export
+hist.c_mseries <- function(cx, signal = NULL, col = "blue", freq = FALSE,
+                           vmin = 0, vmax = 30, ...) {
+  if (!is.c_mseries(cx)) {
+    stop("cefiro package error: Invalid input format! Argument is not a m_series object.", call. = FALSE)
+  }
+  signals_names <- c(names(cx$wind_speed), names(cx$wind_dir), names(cx$wind_sd), names(cx$temp),
+                     names(cx$wind_pressure))
+  if (sum(signal %in% signals_names) != length(signal)) {
+    stop("cefiro package error: Invalid input! One of signals does not exist in c_mseries object.",
+         call. = FALSE)
+  }
+  if (is.null(signal)) {
+    dfhist <- xts::as.xts(cx$mdata[,cx$main_wind_speed])
+    signal <- as.character(cx$main_wind_speed)
+    h <- as.numeric(cx$wind_speed[signal])
+    breaks <- c(vmin:vmax)
+  } else {
+    dfhist <- xts::as.xts(cx$mdata[,signal])
+    #t <- as.character(signal)
+    signal <- as.character(signal)
+    #if (!is.na(names(cx$wind_speed[signal]))) {
+    if (!is.na(names(cx$wind_speed[signal]))) {
+      h <- as.numeric(cx$wind_speed[signal])
+      breaks = c(vmin:vmax)
+    } else if (!is.na(names(cx$wind_dir[signal]))) {
+      h <- as.numeric(cx$wind_dir[signal])
+      breaks = seq(0, 360, 30)
+    } else if (!is.na(names(cx$temp[signal]))) {
+      h <- as.numeric(cx$temp[signal])
+      breaks = seq(-50, 50, 5)
+    } else if (!is.na(names(cx$pressure[signal]))) {
+      h <- as.numeric(cx$pressure[signal])
+      breaks = seq(950, 1050, 20)
+    }
+  }
+
+  if (freq) t_ylab <- "Count" else t_ylab <- "Probability"
+
+  dfhist <- dfhist[dfhist[,signal] >= vmin & dfhist[,signal] <= vmax]
+  hist(dfhist,
+       freq = freq,
+       breaks = breaks,
+       main = paste0("Measurements: ", cx$name),
+       xlab = paste0("Wind speed ", signal, " (m/s) at ", h, " m"),
+       ylab = t_ylab,
+       col = col,
+       ...)
+}
+
+#' @export
+plot.c_mseries <- function(cx, signal = NULL, col = "blue", lty = "solid",
+                           start_date = NULL, end_date = NULL,
+                           legend.loc = "topright", ylim = NULL, ...) {
+  if (!is.c_mseries(cx)) {
+    stop("cefiro package error: Invalid input format! Argument is not a c_mseries object.",
+         call. = FALSE)
+  }
+  signals_names <- c(names(cx$wind_speed), names(cx$wind_dir), names(cx$wind_sd), names(cx$temp),
+                     names(cx$wind_pressure))
+  if (sum(signal %in% signals_names) != length(signal)) {
+    stop("cefiro package error: Invalid input! One of signals does not exist in c_mseries object.",
+         call. = FALSE)
+  }
+  if (is.null(start_date)) {
+    start_date <- min(cx$t_index)
+  }
+  if (is.null(end_date)) {
+    end_date <- max(cx$t_index)
+  }
+  slicer_date <- paste0(start_date, "/", end_date)
+  if (is.null(signal)) {
+    dfplot <- xts::as.xts(cx$mdata[slicer_date, cx$main_wind_speed])
+    signal <- as.character(cx$main_wind_speed)
+    h <- as.numeric(ds$wind_speed[signal])
+  } else {
+    dfplot <- xts::as.xts(cx$mdata[slicer_date, signal])
+    signal <- as.character(signal)
+    #if (!is.na(names(cx$wind_speed[signal]))) {
+    if (sum(!is.na(names(cx$wind_speed[signal]))) == length(names(cx$wind_speed[signal]))) {
+      h <- as.numeric(cx$wind_speed[signal])
+    } else if (sum(!is.na(names(cx$wind_dir[signal]))) == length(names(cx$wind_dir[signal]))) {
+      h <- as.numeric(cx$wind_dir[signal])
+    } else if (sum(!is.na(names(cx$temp[signal]))) == length(names(cx$temp[signal]))) {
+      h <- as.numeric(cx$temp[signal])
+    } else if (sum(!is.na(names(cx$pressure[signal]))) == length(names(cx$pressure[signal]))) {
+      h <- as.numeric(cx$pressure[signal])
+    } else {
+      h <- NULL
+    }
+  }
+  if (is.null(h)) {
+    main_title <- paste0(signal)
+  } else {
+    main_title <- paste0(signal, " (m/s) at ", h, " m")
+  }
+
+  if (length(main_title) > 1) {
+    main_title <- stringr::str_c(main_title, collapse = ", ")
+    main_title <- paste0("Signals ", main_title)
+  } else {
+    main_title <- paste0("Wind speed at ", main_title)
+  }
+
+  #cefiro_palette <- c("#0072B2", "#E69F00", "#009E73", "#F0E442", "#56B4E9" , "#D55E00", "#CC79A7")
+  if (sum(length(col) != length(names(cx$wind_speed[signal])))) {
+    col <- c("#0072B2", "#E69F00", "#009E73", "#F0E442", "#56B4E9" , "#D55E00", "#CC79A7")
+  }
+  if (sum(signal %in% names(cx$wind_dir) > 0 & is.null(ylim)) ) {
+    ylim = c(0, 359)
+  }
+  xts::plot.xts(x = dfplot, main = main_title, lty = lty, col = col, legend.loc = legend.loc,
+                ylim = ylim, ...)
+}
+
+#' @export
+mean.c_mseries <- function(cx, signal = NULL, ...) {
+  if (is.null(signal)) {
+    mean(cx$mdata[,cx$main_wind_speed], na.rm = TRUE)
+  } else {
+    mean(cx$mdata[,signal], na.rm = TRUE)
+  }
+}
+
+#' @export
+median.c_mseries <- function(cx, signal = NULL, ...) {
+  if (is.null(signal)) {
+    median(cx$mdata[,cx$main_wind_speed], na.rm = TRUE)
+  } else {
+    median(cx$mdata[,signal], na.rm = TRUE)
+  }
+}
+
+#' @export
+max.c_mseries <- function(cx, signal = NULL, ...) {
+  if (is.null(signal)) {
+    max(cx$mdata[,cx$main_wind_speed], na.rm = TRUE)
+  } else {
+    max(cx$mdata[,signal], na.rm = TRUE)
+  }
+}
+
+#' @export
+min.c_mseries <- function(cx, signal = NULL, ...) {
+  if (is.null(signal)) {
+    min(cx$mdata[,cx$main_wind_speed], na.rm = TRUE)
+  } else {
+    min(cx$mdata[,signal], na.rm = TRUE)
+  }
+}
+
