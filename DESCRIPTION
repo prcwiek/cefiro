@@ -1,0 +1,24 @@
+Package: cefiro
+Type: Package
+Title: Simple calculations and plots for wind measurement data
+Version: 0.0.0.9000
+uthors@R: c(
+    person("Pawel", "Cwiek", , "prc.altodato@gmail.com", role = c("aut", "cre")),
+    person("O.", "Roberts", role = "ctb",
+           comment = "Wind measurement data from NREL Report No. DA-5500-64451. http://dx.doi.org/10.7799/1183464),
+    person("A.", "Andreas", role = "ctb",
+           comment = "Wind measurement data from NREL Report No. DA-5500-64451. http://dx.doi.org/10.7799/1183464)
+Maintainer: Pawel Cwiek <prc.altodato@gmail.com>
+Description: Simple calculations and plots for wind measurement data
+    Use four spaces when indenting paragraphs within the Description.
+License: GPL (>= 3)
+Imports:
+  dplyr,
+  ggplot2,
+  lubridate,
+  magrittr,
+  stringr,
+  xts
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
