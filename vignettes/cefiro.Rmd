@@ -1,0 +1,126 @@
+---
+title: "Working with cefiro package"
+author: "Pawel Cwiek"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+# Package cefiro
+
+Cicero is an R package that allows to carry out simple calculations and creat simple graphs
+for wind measurement data.
+
+## Example wind measurement data
+
+Package cefiro includes the set of wind measurement data from 
+from US Virgin Islands, St. Thomas Bovoni mast available at
+<https://midcdmz.nrel.gov/apps/sitehome.pl?site=USVILONA>
+
+Roberts, O.; Andreas, A.; (1997). United States Virgin Islands:
+St. Thomas & St. Croix (Data); NREL Report No. DA-5500-64451.
+<http://dx.doi.org/10.7799/1183464>
+
+```{r example wind measurement data}
+library(cefiro)
+knitr::kable(head(winddata))
+```
+
+## Creating a c_mseries object from wind measurement data
+
+First, we have to create a c_mseries object. The example data set consist of the following signals
+
+```{r signals in wind measurement data}
+names(winddata)
+```
+
+For each 10 minutes there are:
+
+- wind speeds at 125 m, 77 m and 44 m
+- wind directions at 77 m and 125 m
+- temperature at 3 m, 44 m and 118 m
+- pressure at 8 m
+
+Let's create a c_mseries object
+
+```{r creating c_mseries}
+dm <- c_mseries(mdata = winddata, date_col = "DateTime",
+                ws_col = c("WS125", "WS77", "WS44"), wd_col = c("WD77", "WD125"),
+                ws_h = c(125, 77, 44), wd_h = c(77, 125),
+                t_col = c("T3", "T44", "T118"), t_h = c(3, 44, 118),
+                p_col = "P8", p_h = 8,
+                name = "Test_mast")
+```
+
+We can check dm 
+```{r checking dm}
+dm
+```
+
+For now the main wind speed sensor is named WS125 and the main direction sensor is WD125.
+
+## Mean, median, maximum and minimum vales
+
+Mean of the main wind speed sensor
+
+```{r mean main}
+mean(dm)
+```
+
+and for other sensors
+```{r mean others}
+mean(dm, signal = "WS77")
+mean(dm, signal = "T118")
+```
+
+The same we can do with median, max and min functions
+and for other sensors
+```{r median, min, max}
+median(dm, signal = "WS77")
+max(dm, signal = "WS77")
+min(dm, signal = "WS77")
+```
+
+## Time series plots
+Let's plot time series for main signals
+```{r first plots, fig.show='hold'}
+plot(dm)
+plot(dm, signal = "WD125", col = "#E69F00")
+plot(dm, signal = "T118")
+plot(dm, signal = "P8")
+```
+
+Temperature for July
+```{r second plots, fig.show='hold'}
+plot(dm, signal = "T118", start_date = "1999-07-01", end_date = "1999-07-31", col = "red")
+```
+Pressure for 3 May 1999
+```{r third plots, fig.show='hold'}
+plot(dm, signal = "P8", start_date = "1999-05-03", end_date = "1999-05-03", col = "green")
+```
+
+Three signals at once
+```{r fourth plots, fig.show='hold'}
+plot(dm, signal = c("WS125", "WS77", "WS44"))
+```
+
+## Histogram plots
+It is possible to create histograms for single levels
+
+```{r histograms, fig.show='hold'}
+hist(dm)
+hist(dm, signal = "WD125", col = "#E69F00")
+hist(dm, signal = "T118", col = "red")
+hist(dm, signal = "P8", col = "green")
+```
+
+### More soon...
