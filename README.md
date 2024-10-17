@@ -12,13 +12,7 @@ measurement data.
 
 ### Installation
 
-CRAN version
-
-``` r
-install.packages("pmetar")
-```
-
-Get the development version 0.5.0 from github:
+Get the development version 0.0.9000 from github:
 
 ``` r
 # install.packages("devtools")
