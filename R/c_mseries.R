@@ -43,7 +43,7 @@
 #' # Creating c_mseries object from the din data frame where
 #' # the column DateTime consists of the time stamps in
 #' the format 1999-01-01 00:10:00:
-#' ds <- c_mseries(mdata = din, date_col = "DateTime",
+#' df <- c_mseries(mdata = din, date_col = "DateTime",
 #' ws_col = c("WS125", "WS77", "WS44"), wd_col = c("WD77", "WD125"),
 #' ws_h = c(125, 77, 44), wd_h = c(77, 125),
 #' t_col = c("T3", "T44", "T118"), t_h = c(3, 44, 118),
@@ -163,8 +163,13 @@ hist.c_mseries <- function(cx, signal = NULL, col = "blue", freq = FALSE,
   if (!is.c_mseries(cx)) {
     stop("cefiro package error: Invalid input format! Argument is not a m_series object.", call. = FALSE)
   }
+
+  if (length(signal) > 1) {
+    stop("cefiro package error: Only one signal for histogram!", call. = FALSE)
+  }
+
   signals_names <- c(names(cx$wind_speed), names(cx$wind_dir), names(cx$wind_sd), names(cx$temp),
-                     names(cx$wind_pressure))
+                     names(cx$pressure))
   if (sum(signal %in% signals_names) != length(signal)) {
     stop("cefiro package error: Invalid input! One of signals does not exist in c_mseries object.",
          call. = FALSE)
@@ -174,34 +179,46 @@ hist.c_mseries <- function(cx, signal = NULL, col = "blue", freq = FALSE,
     signal <- as.character(cx$main_wind_speed)
     h <- as.numeric(cx$wind_speed[signal])
     breaks <- c(vmin:vmax)
+    dfhist <- dfhist[dfhist[,signal] >= vmin & dfhist[,signal] <= vmax]
+    signal_name <- ""
+    units_name <- " m/s"
   } else {
     dfhist <- xts::as.xts(cx$mdata[,signal])
-    #t <- as.character(signal)
     signal <- as.character(signal)
-    #if (!is.na(names(cx$wind_speed[signal]))) {
     if (!is.na(names(cx$wind_speed[signal]))) {
       h <- as.numeric(cx$wind_speed[signal])
       breaks = c(vmin:vmax)
+      dfhist <- dfhist[dfhist[,signal] >= vmin & dfhist[,signal] <= vmax]
+      signal_name <- "Wind speed "
+      units_name <- " m/s"
     } else if (!is.na(names(cx$wind_dir[signal]))) {
       h <- as.numeric(cx$wind_dir[signal])
       breaks = seq(0, 360, 30)
+      dfhist <- dfhist[dfhist[,signal] >= 0 & dfhist[,signal] < 360]
+      signal_name <- "Wind direction "
+      units_name <- " deg"
     } else if (!is.na(names(cx$temp[signal]))) {
       h <- as.numeric(cx$temp[signal])
       breaks = seq(-50, 50, 5)
+      dfhist <- dfhist[dfhist[,signal] >= -50 & dfhist[,signal] <= 50]
+      signal_name <- "Temperature "
+      units_name <- " C"
     } else if (!is.na(names(cx$pressure[signal]))) {
       h <- as.numeric(cx$pressure[signal])
-      breaks = seq(950, 1050, 20)
+      breaks = seq(950, 1050, 10)
+      dfhist <- dfhist[dfhist[,signal] >= 950 & dfhist[,signal] <= 1050]
+      signal_name <- "Pressure "
+      units_name <- " hPa"
     }
   }
 
   if (freq) t_ylab <- "Count" else t_ylab <- "Probability"
 
-  dfhist <- dfhist[dfhist[,signal] >= vmin & dfhist[,signal] <= vmax]
   hist(dfhist,
        freq = freq,
        breaks = breaks,
        main = paste0("Measurements: ", cx$name),
-       xlab = paste0("Wind speed ", signal, " (m/s) at ", h, " m"),
+       xlab = paste0(signal_name, signal, units_name, " at ", h, " m"),
        ylab = t_ylab,
        col = col,
        ...)
@@ -216,7 +233,7 @@ plot.c_mseries <- function(cx, signal = NULL, col = "blue", lty = "solid",
          call. = FALSE)
   }
   signals_names <- c(names(cx$wind_speed), names(cx$wind_dir), names(cx$wind_sd), names(cx$temp),
-                     names(cx$wind_pressure))
+                     names(cx$pressure))
   if (sum(signal %in% signals_names) != length(signal)) {
     stop("cefiro package error: Invalid input! One of signals does not exist in c_mseries object.",
          call. = FALSE)
@@ -231,34 +248,39 @@ plot.c_mseries <- function(cx, signal = NULL, col = "blue", lty = "solid",
   if (is.null(signal)) {
     dfplot <- xts::as.xts(cx$mdata[slicer_date, cx$main_wind_speed])
     signal <- as.character(cx$main_wind_speed)
-    h <- as.numeric(ds$wind_speed[signal])
+    h <- as.numeric(cx$wind_speed[signal])
+    signal_name <- "Wind speed "
   } else {
     dfplot <- xts::as.xts(cx$mdata[slicer_date, signal])
     signal <- as.character(signal)
-    #if (!is.na(names(cx$wind_speed[signal]))) {
     if (sum(!is.na(names(cx$wind_speed[signal]))) == length(names(cx$wind_speed[signal]))) {
       h <- as.numeric(cx$wind_speed[signal])
+      signal_name <- "Wind speed "
     } else if (sum(!is.na(names(cx$wind_dir[signal]))) == length(names(cx$wind_dir[signal]))) {
       h <- as.numeric(cx$wind_dir[signal])
+      signal_name <- "Wind direction "
     } else if (sum(!is.na(names(cx$temp[signal]))) == length(names(cx$temp[signal]))) {
       h <- as.numeric(cx$temp[signal])
+      signal_name <- "Temperature "
     } else if (sum(!is.na(names(cx$pressure[signal]))) == length(names(cx$pressure[signal]))) {
       h <- as.numeric(cx$pressure[signal])
+      signal_name <- "Pressure "
     } else {
       h <- NULL
     }
   }
+
   if (is.null(h)) {
     main_title <- paste0(signal)
   } else {
-    main_title <- paste0(signal, " (m/s) at ", h, " m")
+    main_title <- paste0(signal_name, signal, " at ", h, " m")
   }
 
   if (length(main_title) > 1) {
     main_title <- stringr::str_c(main_title, collapse = ", ")
+  } else if (is.null(h)) {
+    main_title <- stringr::str_c(main_title, collapse = ", ")
     main_title <- paste0("Signals ", main_title)
-  } else {
-    main_title <- paste0("Wind speed at ", main_title)
   }
 
   #cefiro_palette <- c("#0072B2", "#E69F00", "#009E73", "#F0E442", "#56B4E9" , "#D55E00", "#CC79A7")
