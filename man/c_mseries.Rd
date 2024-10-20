@@ -14,14 +14,16 @@ A selected column should be POSIXct.}
 
 \item{ws_col}{character; vector with names of columns with wind speed signals.}
 
-\item{ws_dir}{character; vector with names of columns with wind direction signals.}
-
-\item{ws_h}{numeric; vector with heights of wind speed signals.}
-
-\item{wd_h}{numeric; vector with heights of wind direction signals.}
-
-\item{sd_col}{character; vector with names of columns with standard deviation of\cr
+\item{ws_h}{numeric; vector with heights of wind speed signals.
+#' @param ws_sd_col character; vector with names of columns with standard deviation of\cr
 wind speed signals.}
+
+\item{dir_col}{character; vector with names of columns with wind direction signals.}
+
+\item{dir_h}{numeric; vector with heights of wind direction signals.}
+
+\item{dir_sd_col}{character; vector with names of columns with standard deviation of\cr
+wind direction signals}
 
 \item{t_col}{character; vector with names of columns with temperature signals.}
 
@@ -66,9 +68,9 @@ The output c_mseries object consists of:
 # Creating c_mseries object from the din data frame where
 # the column DateTime consists of the time stamps in
 the format 1999-01-01 00:10:00:
-ds <- c_mseries(mdata = din, date_col = "DateTime",
-ws_col = c("WS125", "WS77", "WS44"), wd_col = c("WD77", "WD125"),
-ws_h = c(125, 77, 44), wd_h = c(77, 125),
+df <- c_mseries(mdata = din, date_col = "DateTime",
+ws_col = c("WS125", "WS77", "WS44"), dir_col = c("WD77", "WD125"),
+ws_h = c(125, 77, 44), dir_h = c(77, 125),
 t_col = c("T3", "T44", "T118"), t_h = c(3, 44, 118),
 p_col = "P8", p_h = 8,
 name = "Test mast")

@@ -54,8 +54,8 @@ Let's create a c_mseries object
 
 ```{r creating c_mseries}
 dm <- c_mseries(mdata = winddata, date_col = "DateTime",
-                ws_col = c("WS125", "WS77", "WS44"), wd_col = c("WD77", "WD125"),
-                ws_h = c(125, 77, 44), wd_h = c(77, 125),
+                ws_col = c("WS125", "WS77", "WS44"), ws_h = c(125, 77, 44),
+                dir_col = c("WD77", "WD125"), dir_h = c(77, 125),
                 t_col = c("T3", "T44", "T118"), t_h = c(3, 44, 118),
                 p_col = "P8", p_h = 8,
                 name = "Test_mast")
