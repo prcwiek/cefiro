@@ -20,11 +20,13 @@
 #' @param date_col character; name of column with dates and hours.\cr
 #' A selected column should be POSIXct.
 #' @param ws_col character; vector with names of columns with wind speed signals.
-#' @param ws_dir character; vector with names of columns with wind direction signals.
 #' @param ws_h numeric; vector with heights of wind speed signals.
-#' @param wd_h numeric; vector with heights of wind direction signals.
-#' @param sd_col character; vector with names of columns with standard deviation of\cr
+#' #' @param ws_sd_col character; vector with names of columns with standard deviation of\cr
 #' wind speed signals.
+#' @param dir_col character; vector with names of columns with wind direction signals.
+#' @param dir_h numeric; vector with heights of wind direction signals.
+#' @param dir_sd_col character; vector with names of columns with standard deviation of\cr
+#' wind direction signals
 #' @param t_col character; vector with names of columns with temperature signals.
 #' @param t_h numeric; vector with heights of temperature signals.
 #' @param p_col character; vector with names of columns with pressure signals.
@@ -44,8 +46,8 @@
 #' # the column DateTime consists of the time stamps in
 #' the format 1999-01-01 00:10:00:
 #' df <- c_mseries(mdata = din, date_col = "DateTime",
-#' ws_col = c("WS125", "WS77", "WS44"), wd_col = c("WD77", "WD125"),
-#' ws_h = c(125, 77, 44), wd_h = c(77, 125),
+#' ws_col = c("WS125", "WS77", "WS44"), dir_col = c("WD77", "WD125"),
+#' ws_h = c(125, 77, 44), dir_h = c(77, 125),
 #' t_col = c("T3", "T44", "T118"), t_h = c(3, 44, 118),
 #' p_col = "P8", p_h = 8,
 #' name = "Test mast")
@@ -58,8 +60,10 @@ c_mseries <- function(mdata, ...) {
 
 #' @export
 c_mseries.default <- function(mdata = NULL, date_col = NULL,
-                              ws_col = NULL, wd_col = NULL, ws_h = NULL, wd_h = NULL,
-                              sd_col = NULL,
+                              ws_col = NULL, ws_h = NULL,
+                              ws_sd_col = NULL,
+                              dir_col = NULL, dir_h = NULL,
+                              dir_sd_col = NULL,
                               t_col = NULL, t_h = NULL,
                               p_col = NULL, p_h = NULL,
                               ws_main = NULL, wd_main = NULL,
@@ -101,8 +105,13 @@ c_mseries.default <- function(mdata = NULL, date_col = NULL,
   dout <- dout[, n_index]
 
   wind_speed <- as.list(setNames(ws_h, ws_col))
-  wind_dir <- as.list(setNames(wd_h, wd_col))
-  wind_sd <- as.list(setNames(ws_h, sd_col))
+  wind_dir <- as.list(setNames(dir_h, dir_col))
+  if (is.null(ws_sd_col)) {
+    wind_sd <- NULL
+  } else {
+    wind_sd <- as.list(setNames(ws_h, ws_sd_col))
+  }
+
 
   if (is.null(ws_main)) {
     main_wind_speed <- names(which.max(wind_speed))
@@ -133,7 +142,7 @@ is.c_mseries <- function(cx) {
 }
 
 #' @export
-print.c_mseries <- function(cx,..) {
+print.c_mseries <- function(cx, ...) {
   if (!is.c_mseries(cx)) {
     stop("cefiro package error: Invalid input format! Argument is not a m_series object.", call. = FALSE)
   }
@@ -330,3 +339,57 @@ min.c_mseries <- function(cx, signal = NULL, ...) {
   }
 }
 
+#' @export
+summary.c_mseries <- function(cx, ...) {
+  if (!is.c_mseries(cx)) {
+    stop("cefiro package error: Invalid input format! Argument is not a m_series object.", call. = FALSE)
+  }
+  cat("Measurement time series: ", cx$name," \n")
+  cat(sprintf("Start date: %s \n", as.character(format(cx$start_date, format = "%Y-%m-%d %H:%M:%S"))))
+  cat(sprintf("End date: %s \n", as.character(format(cx$end_date, format = "%Y-%m-%d %H:%M:%S"))))
+  for (item in names(cx$wind_speed)) {
+    cat(sprintf("Wind speed %s: mean %.2f m/s, median %.2f m/s, min %.2f m/s, max %.2f m/s\n",
+                item,
+                mean(cx, signal = item),
+                median(cx, signal = item),
+                min(cx, signal = item),
+                max(cx, signal = item)),
+        sep = "")
+  }
+  for (item in names(cx$wind_sd)) {
+    cat(sprintf("SD wind speed %s: mean %.2f m/s, median %.2f m/s, min %.2f m/s, max %.2f m/s\n",
+                item,
+                mean(cx, signal = item),
+                median(cx, signal = item),
+                min(cx, signal = item),
+                max(cx, signal = item)),
+        sep = "")
+  }
+  for (item in names(cx$wind_dir)) {
+    cat(sprintf("Wind direction %s: mean %.2f, median %.2f\n",
+                item,
+                mean(cx, signal = item),
+                median(cx, signal = item)),
+        sep = "")
+  }
+  for (item in names(cx$temp)) {
+    cat(sprintf("Temperature %s: mean %.2f C, median %.2f C, min %.2f C, max %.2f C\n",
+                item,
+                mean(cx, signal = item),
+                median(cx, signal = item),
+                min(cx, signal = item),
+                max(cx, signal = item)),
+        sep = "")
+  }
+  for (item in names(cx$pressure)) {
+    cat(sprintf("Pressure %s: mean %.2f hPa, median %.2f hPa, min %.2f hPa, max %.2f hPa\n",
+                item,
+                mean(cx, signal = item),
+                median(cx, signal = item),
+                min(cx, signal = item),
+                max(cx, signal = item)),
+        sep = "")
+  }
+
+
+}
