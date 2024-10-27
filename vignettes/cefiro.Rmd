@@ -5,8 +5,11 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include = FALSE}
@@ -15,19 +18,20 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
 # Package cefiro
 
-Cicero is an R package that allows to carry out simple calculations and creat simple graphs
-for wind measurement data.
+Cicero is an R package that allows to carry out simple calculations and
+creat simple graphs for wind measurement data.
 
 ## Example wind measurement data
 
-Package cefiro includes the set of wind measurement data from 
-from US Virgin Islands, St. Thomas Bovoni mast available at
+Package cefiro includes the set of wind measurement data from from US
+Virgin Islands, St. Thomas Bovoni mast available at
 <https://midcdmz.nrel.gov/apps/sitehome.pl?site=USVILONA>
 
-Roberts, O.; Andreas, A.; (1997). United States Virgin Islands:
-St. Thomas & St. Croix (Data); NREL Report No. DA-5500-64451.
+Roberts, O.; Andreas, A.; (1997). United States Virgin Islands: St.
+Thomas & St. Croix (Data); NREL Report No. DA-5500-64451.
 <http://dx.doi.org/10.7799/1183464>
 
 ```{r example wind measurement data}
@@ -37,7 +41,8 @@ knitr::kable(head(winddata))
 
 ## Creating a c_mseries object from wind measurement data
 
-First, we have to create a c_mseries object. The example data set consist of the following signals
+First, we have to create a c_mseries object. The example data set
+consist of the following signals
 
 ```{r signals in wind measurement data}
 names(winddata)
@@ -45,10 +50,10 @@ names(winddata)
 
 For each 10 minutes there are:
 
-- wind speeds at 125 m, 77 m and 44 m
-- wind directions at 77 m and 125 m
-- temperature at 3 m, 44 m and 118 m
-- pressure at 8 m
+-   wind speeds at 125 m, 77 m and 44 m
+-   wind directions at 77 m and 125 m
+-   temperature at 3 m, 44 m and 118 m
+-   pressure at 8 m
 
 Let's create a c_mseries object
 
@@ -61,12 +66,20 @@ dm <- c_mseries(mdata = winddata, date_col = "DateTime",
                 name = "Test_mast")
 ```
 
-We can check dm 
+We can check dm
+
 ```{r checking dm}
 dm
 ```
 
-For now the main wind speed sensor is named WS125 and the main direction sensor is WD125.
+For now the main wind speed sensor is named WS125 and the main direction
+sensor is WD125.
+
+## Summary of c_mseries objects
+```{r summary}
+summary(dm)
+```
+
 
 ## Mean, median, maximum and minimum vales
 
@@ -77,13 +90,15 @@ mean(dm)
 ```
 
 and for other sensors
+
 ```{r mean others}
 mean(dm, signal = "WS77")
 mean(dm, signal = "T118")
 ```
 
-The same we can do with median, max and min functions
-and for other sensors
+The same we can do with median, max and min functions and for other
+sensors
+
 ```{r median, min, max}
 median(dm, signal = "WS77")
 max(dm, signal = "WS77")
@@ -91,7 +106,9 @@ min(dm, signal = "WS77")
 ```
 
 ## Time series plots
+
 Let's plot time series for main signals
+
 ```{r first plots, fig.show='hold'}
 plot(dm)
 plot(dm, signal = "WD125", col = "#E69F00")
@@ -100,20 +117,25 @@ plot(dm, signal = "P8")
 ```
 
 Temperature for July
+
 ```{r second plots, fig.show='hold'}
 plot(dm, signal = "T118", start_date = "1999-07-01", end_date = "1999-07-31", col = "red")
 ```
+
 Pressure for 3 May 1999
+
 ```{r third plots, fig.show='hold'}
 plot(dm, signal = "P8", start_date = "1999-05-03", end_date = "1999-05-03", col = "green")
 ```
 
 Three signals at once
+
 ```{r fourth plots, fig.show='hold'}
 plot(dm, signal = c("WS125", "WS77", "WS44"))
 ```
 
 ## Histogram plots
+
 It is possible to create histograms for single levels
 
 ```{r histograms, fig.show='hold'}
@@ -121,6 +143,28 @@ hist(dm)
 hist(dm, signal = "WD125", col = "#E69F00")
 hist(dm, signal = "T118", col = "red")
 hist(dm, signal = "P8", col = "green")
+```
+
+## Weibull distribution
+It is possible to define a Weibull distribution as the c_weibull object
+```{r weibull1}
+c_weibull(c = 7.0, k = 1.8, ws = 5.0, ro = 1.225)
+```
+or
+```{r weibull2}
+distribution_example <- c_weibull(c = 7.0, k = 1.8, ws = 5.0, ro = 1.225)
+```
+A plot or a histogram can be generated
+``` {r weibull3}
+plot(distribution_example, col = "red", lwd = 2)
+hist(distribution_example)
+```
+
+## Finding the scale c factor and the shape k factor of the Weibull distribution
+With the created above c_mseries it is possible to find c and k values.
+```{r finding_Weibull}
+c_find_weibull(dm)
+c_find_weibull(dm, signal = "WS77")
 ```
 
 ### More soon...
