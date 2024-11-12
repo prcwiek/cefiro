@@ -167,4 +167,11 @@ c_find_weibull(dm)
 c_find_weibull(dm, signal = "WS77")
 ```
 
+## Ploting wind roses
+Function c_windrose allows to plot wind roses from maximum two wind directions sensors
+```{r wind_rose}
+c_windrose(dm)
+c_windrose(dm, signal = c("WD77", "WD125"))
+```
+
 ### More soon...
