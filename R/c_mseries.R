@@ -390,6 +390,6 @@ summary.c_mseries <- function(cx, ...) {
                 max(cx, signal = item)),
         sep = "")
   }
-
-
 }
+
+

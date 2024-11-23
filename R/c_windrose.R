@@ -85,10 +85,11 @@ c_windrose <- function(cx, signal = NULL, col = "blue") {
                       position = "dodge2") +
                       ggplot2::scale_fill_brewer(palette="Paired") +
     ggplot2::coord_polar(start = -(30/2)*(pi/180)) +
-    ggplot2::xlab(signal_name) +
-    ggplot2::ylab("%") +
-    ggplot2::theme_minimal() +
-    ggplot2::labs(fill = "")
+    ggplot2::labs(fill = "",
+                  x = signal_name,
+                  y = "%") +
+    ggplot2::theme_minimal()
+
 
   return(p)
 
