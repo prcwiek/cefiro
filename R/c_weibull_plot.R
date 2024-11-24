@@ -7,15 +7,15 @@
 #' or a numeric vector.
 #' @param signal character, a name of a wind speed signal. If NULL, the main\cr
 #' signal is used.
-#' @param c scale factor
-#' @param k shape factor
-#' @param vmin minimal wind speed
-#' @param vmax maximum wind speed
-#' @param line if TRUE, plot Weibull line
-#' @param lcolor line color of Weibull distribution
-#' @param lsize line size of Weibull distribution
-#' @param hist if TRUE, plot histogram
-#' @param hcolor histogram color
+#' @param c numeric, scale factor
+#' @param k numeric, shape factor
+#' @param vmin numeric, minimal wind speed
+#' @param vmax numeric, maximum wind speed
+#' @param line logical, if TRUE, plot Weibull line
+#' @param lcolor character, line color of Weibull distribution
+#' @param lsize numeric, line size of Weibull distribution
+#' @param hist logical, if TRUE, plot histogram
+#' @param hcolor character, histogram color
 #'
 #' @importFrom magrittr %>%
 #'

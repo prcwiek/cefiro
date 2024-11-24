@@ -25,23 +25,23 @@ or a numeric vector.}
 \item{signal}{character, a name of a wind speed signal. If NULL, the main\cr
 signal is used.}
 
-\item{c}{scale factor}
+\item{c}{numeric, scale factor}
 
-\item{k}{shape factor}
+\item{k}{numeric, shape factor}
 
-\item{vmin}{minimal wind speed}
+\item{vmin}{numeric, minimal wind speed}
 
-\item{vmax}{maximum wind speed}
+\item{vmax}{numeric, maximum wind speed}
 
-\item{line}{if TRUE, plot Weibull line}
+\item{line}{logical, if TRUE, plot Weibull line}
 
-\item{lcolor}{line color of Weibull distribution}
+\item{lcolor}{character, line color of Weibull distribution}
 
-\item{lsize}{line size of Weibull distribution}
+\item{lsize}{numeric, line size of Weibull distribution}
 
-\item{hist}{if TRUE, plot histogram}
+\item{hist}{logical, if TRUE, plot histogram}
 
-\item{hcolor}{histogram color}
+\item{hcolor}{character, histogram color}
 }
 \description{
 Plot Weibull distribution from c_mseries object or from a numeric vector\cr
