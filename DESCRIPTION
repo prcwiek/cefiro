@@ -1,13 +1,22 @@
 Package: cefiro
 Type: Package
 Title: Simple calculations and plots for wind measurement data
-Version: 0.0.0.9006
+Version: 0.0.0.9007
 uthors@R: c(
-    person("Pawel", "Cwiek", , "prc.altodato@gmail.com", role = c("aut", "cre")),
-    person("O.", "Roberts", role = "ctb",
-           comment = "Wind measurement data from NREL Report No. DA-5500-64451. http://dx.doi.org/10.7799/1183464),
-    person("A.", "Andreas", role = "ctb",
-           comment = "Wind measurement data from NREL Report No. DA-5500-64451. http://dx.doi.org/10.7799/1183464)
+            person("Pawel", "Cwiek", , "prc.altodato@gmail.com", role = c("aut", "cre")),
+            person("Kurt Schaldemose", "Hansen", role = "ctb",
+                   comment = "Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
+                   Wind resource data from the tall Risø met mast. Technical University of Denmark.
+                   Dataset. https://doi.org/10.11583/DTU.14153204.v1"),
+            person("Nikola", "Vasiljevic", role = "ctb",
+                   comment = "Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
+                   Wind resource data from the tall Risø met mast. Technical University of Denmark.
+                   Dataset. https://doi.org/10.11583/DTU.14153204.v1"),
+            person("Steen Arne", "Sørensen", role = "ctb",
+                   comment = "Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
+                   Wind resource data from the tall Risø met mast. Technical University of Denmark.
+                   Dataset. https://doi.org/10.11583/DTU.14153204.v1") 
+            )
 Maintainer: Pawel Cwiek <prc.altodato@gmail.com>
 Description: Simple calculations and plots for wind measurement data
     Use four spaces when indenting paragraphs within the Description.
