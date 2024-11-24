@@ -168,6 +168,7 @@ print.c_mseries <- function(cx, ...) {
 
 #' @export
 hist.c_mseries <- function(cx, signal = NULL, col = "blue", freq = FALSE,
+                           start_date = NULL, end_date = NULL,
                            vmin = 0, vmax = 30, ...) {
   if (!is.c_mseries(cx)) {
     stop("cefiro package error: Invalid input format! Argument is not a m_series object.", call. = FALSE)
@@ -177,6 +178,30 @@ hist.c_mseries <- function(cx, signal = NULL, col = "blue", freq = FALSE,
     stop("cefiro package error: Only one signal for histogram!", call. = FALSE)
   }
 
+  # check start date
+  if (!is.null(start_date)) {
+    if (start_date < min(cx$t_index) | start_date > max(cx$t_index)) {
+      stop("cefiro package error: Invalid input! Start date out of scope.",
+           call. = FALSE)
+    }
+  }
+  if (!is.null(end_date)) {
+    if (end_date > max(cx$t_index) | end_date < min(cx$t_index)) {
+      stop("cefiro package error: Invalid input! End date out of scope.",
+           call. = FALSE)
+    }
+  }
+  # define start and en dates if not provided in inputs
+  if (is.null(start_date)) {
+    start_date <- min(cx$t_index)
+  }
+  if (is.null(end_date)) {
+    end_date <- max(cx$t_index)
+  }
+
+  # trim data according start and end dates
+  slicer_date <- paste0(start_date, "/", end_date)
+
   signals_names <- c(names(cx$wind_speed), names(cx$wind_dir), names(cx$wind_sd), names(cx$temp),
                      names(cx$pressure))
   if (sum(signal %in% signals_names) != length(signal)) {
@@ -184,7 +209,7 @@ hist.c_mseries <- function(cx, signal = NULL, col = "blue", freq = FALSE,
          call. = FALSE)
   }
   if (is.null(signal)) {
-    dfhist <- xts::as.xts(cx$mdata[,cx$main_wind_speed])
+    dfhist <- xts::as.xts(cx$mdata[slicer_date, cx$main_wind_speed])
     signal <- as.character(cx$main_wind_speed)
     h <- as.numeric(cx$wind_speed[signal])
     breaks <- c(vmin:vmax)
@@ -192,7 +217,7 @@ hist.c_mseries <- function(cx, signal = NULL, col = "blue", freq = FALSE,
     signal_name <- ""
     units_name <- " m/s"
   } else {
-    dfhist <- xts::as.xts(cx$mdata[,signal])
+    dfhist <- xts::as.xts(cx$mdata[slicer_date, signal])
     signal <- as.character(signal)
     if (!is.na(names(cx$wind_speed[signal]))) {
       h <- as.numeric(cx$wind_speed[signal])
@@ -247,13 +272,31 @@ plot.c_mseries <- function(cx, signal = NULL, col = "blue", lty = "solid",
     stop("cefiro package error: Invalid input! One of signals does not exist in c_mseries object.",
          call. = FALSE)
   }
+
+  # check start date
+  if (!is.null(start_date)) {
+    if (start_date < min(cx$t_index) | start_date > max(cx$t_index)) {
+      stop("cefiro package error: Invalid input! Start date out of scope.",
+           call. = FALSE)
+    }
+  }
+  if (!is.null(end_date)) {
+    if (end_date > max(cx$t_index) | end_date < min(cx$t_index)) {
+      stop("cefiro package error: Invalid input! End date out of scope.",
+           call. = FALSE)
+    }
+  }
+  # define start and en dates if not provided in inputs
   if (is.null(start_date)) {
     start_date <- min(cx$t_index)
   }
   if (is.null(end_date)) {
     end_date <- max(cx$t_index)
   }
+
+  # trim data according start and end dates
   slicer_date <- paste0(start_date, "/", end_date)
+
   if (is.null(signal)) {
     dfplot <- xts::as.xts(cx$mdata[slicer_date, cx$main_wind_speed])
     signal <- as.character(cx$main_wind_speed)
