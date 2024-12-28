@@ -4,13 +4,13 @@
 \alias{c_windrose}
 \title{c_windrose}
 \usage{
-c_windrose(cx, signal = NULL, col = "blue")
+c_windrose(cx, signals = NULL, col = "blue")
 }
 \arguments{
 \item{cx}{c_mseries object with data and information about wind measurement\cr
 or a numeric vector.}
 
-\item{signal}{character, a name of a wind direction signal(s). If NULL, the main\cr
+\item{signals}{character, a name of a wind direction signal(s). If NULL, the main\cr
 signal is used.}
 
 \item{col}{color}

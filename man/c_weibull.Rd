@@ -23,7 +23,7 @@ shape factor
 }
 \description{
 Weibull distribution function calculates probability for a given wind speed, a
-shape factor and a scale factor
+shape factor and a scale factor.
 }
 \examples{
 c_weibull(c = 7.0, k = 2.0, ws = 5.0, ro = 1.225)

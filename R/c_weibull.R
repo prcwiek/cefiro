@@ -1,7 +1,7 @@
 #' c_weibull
 #'
 #' Weibull distribution function calculates probability for a given wind speed, a
-#' shape factor and a scale factor
+#' shape factor and a scale factor.
 #'
 #' @param c scale factor
 #' @param k shape factor
