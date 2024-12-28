@@ -27,6 +27,19 @@ c_find_weibull <- function(cx = NULL, signal = NULL,
                            kmin = 1, kmax = 8,
                            eps = 0.000001,
                            iter = 50) {
+
+  # check if cx is c_mseries object
+  if (is.null(cx) & !is.c_mseries(cx)) {
+    stop("cefiro package error: Invalid input format! Argument is not a c_mseries object.",
+         call. = FALSE)
+  }
+
+  # check if more than one signal is provided
+  if (!is.null(signal) & length(signal) > 1) {
+    stop("cefiro package error: Invalid input! Only one signal possible.",
+         call. = FALSE)
+  }
+
   # get data series
   if (!is.null(cx) & is.c_mseries(cx)) {
     if (!is.null(signal)) {
