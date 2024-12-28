@@ -1,7 +1,7 @@
 Package: cefiro
 Type: Package
 Title: Simple calculations and plots for wind measurement data
-Version: 0.0.0.9007
+Version: 0.0.0.9010
 uthors@R: c(
             person("Pawel", "Cwiek", , "prc.altodato@gmail.com", role = c("aut", "cre")),
             person("Kurt Schaldemose", "Hansen", role = "ctb",
@@ -27,6 +27,7 @@ Imports:
   lubridate,
   magrittr,
   stringr,
+  tidyselect,
   xts
 Encoding: UTF-8
 LazyData: true
