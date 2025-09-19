@@ -1,8 +1,8 @@
 Package: cefiro
 Type: Package
 Title: Simple calculations and plots for wind measurement data
-Version: 0.0.0.9010
-uthors@R: c(
+Version: 0.0.0.9200
+Authors@R: c(
             person("Pawel", "Cwiek", , "prc.altodato@gmail.com", role = c("aut", "cre")),
             person("Kurt Schaldemose", "Hansen", role = "ctb",
                    comment = "Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
@@ -19,8 +19,12 @@ uthors@R: c(
             )
 Maintainer: Pawel Cwiek <prc.altodato@gmail.com>
 Description: Simple calculations and plots for wind measurement data
-    Use four spaces when indenting paragraphs within the Description.
 License: GPL (>= 3)
+Depends:
+  R (>= 4.1),
+  base,
+  utils,
+  stats
 Imports:
   dplyr,
   ggplot2,
@@ -31,4 +35,5 @@ Imports:
   xts
 Encoding: UTF-8
 LazyData: true
+NeedsCompilation: yes
 RoxygenNote: 7.3.2
