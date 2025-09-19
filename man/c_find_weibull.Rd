@@ -9,7 +9,7 @@ c_find_weibull(
   signal = NULL,
   kmin = 1,
   kmax = 8,
-  eps = 0.000001,
+  eps = 1e-06,
   iter = 50
 )
 }

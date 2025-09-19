@@ -48,8 +48,10 @@ Plot Weibull distribution from c_mseries object or from a numeric vector\cr
 or with given c scale factor and k shape factor
 }
 \examples{
+\dontrun{
 c_weibull_plot(cs)
 c_weibull_plot(cs, hist = TRUE)
+}
 c_weibull_plot(c = 7.0, k = 2.0, vmin = 0, vmax = 25, lcolor = "blue")
 c_weibull_plot(c = 7.0, k = 2.0, vmin = 0, vmax = 25, lcolor = "red", lsize = 1, hist = TRUE)
 c_weibull_plot(c = 7.0, k = 2.0, vmin = 0, vmax = 30, lcolor = "red", hist = TRUE, hcolor = "blue")

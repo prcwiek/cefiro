@@ -6,10 +6,13 @@
 \usage{
 c_coverage(cx = NULL, signals = NULL)
 }
+\arguments{
+\item{cx}{c_mseries object with data and information about wind measurement\cr
+or a numeric vector.}
+
+\item{signals}{character, name(s) of signal(s). If NULL, the main\cr
+signal is used.}
+}
 \description{
 Function presents coverage of wind measuremetn data.
-#' @param cx c_mseries object with data and information about wind measurement\cr
-or a numeric vector.
-#' @param signals character, name(s) of signal(s). If NULL, the main\cr
-signal is used.
 }

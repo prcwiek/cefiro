@@ -4,7 +4,25 @@
 \alias{c_mseries}
 \title{c_mseries}
 \usage{
-c_mseries(mdata, ...)
+c_mseries(
+  mdata,
+  date_col,
+  ws_col,
+  ws_h,
+  ws_sd_col,
+  dir_col,
+  dir_h,
+  dir_sd_col,
+  t_col,
+  t_h,
+  p_col,
+  p_h,
+  ws_main,
+  wd_main,
+  name,
+  tzone,
+  ...
+)
 }
 \arguments{
 \item{mdata}{data frame; wind measurements data, names of columns are required.}
@@ -14,8 +32,9 @@ A selected column should be POSIXct.}
 
 \item{ws_col}{character; vector with names of columns with wind speed signals.}
 
-\item{ws_h}{numeric; vector with heights of wind speed signals.
-#' @param ws_sd_col character; vector with names of columns with standard deviation of\cr
+\item{ws_h}{numeric; vector with heights of wind speed signals.}
+
+\item{ws_sd_col}{character; vector with names of columns with standard deviation of\cr
 wind speed signals.}
 
 \item{dir_col}{character; vector with names of columns with wind direction signals.}
@@ -31,7 +50,7 @@ wind direction signals}
 
 \item{p_col}{character; vector with names of columns with pressure signals.}
 
-\item{p_c}{numeric; vector with heights of pressure signals.}
+\item{p_h}{numeric; vector with heights of pressure signals.}
 
 \item{ws_main}{character; name of main wind speed signal. If NULL, the highest\cr
 signal will be selected.}
