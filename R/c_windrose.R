@@ -29,7 +29,7 @@ c_windrose <- function(cx, signals = NULL, col = "blue") {
   }
 
   # create breaks
-  breaks <- seq(0,360,30)
+  breaks <- seq(0, 360, 30)
 
   if (is.null(signals)) {
     dfplot <- xts::as.xts(cx$mdata[, cx$main_wind_dir])

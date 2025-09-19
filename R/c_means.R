@@ -3,7 +3,7 @@
 #' @param cx c_mseries object with data and information about wind measurement\cr
 #' or a numeric vector.
 #' @param mom logical, if TRUE, means of monthly means will be calculated
-#' #' #' @param signals character, name(s) of signal(s). If NULL, the main\cr
+#' @param signals character, name(s) of signal(s). If NULL, the main\cr
 #' signal is used.
 #'
 #' @export
@@ -24,33 +24,29 @@ c_means <- function(cx = NULL, mom = FALSE, signals = NULL) {
          call. = FALSE)
   }
 
-  # signals <- c(names(cx$wind_speed), names(cx$wind_dir),
-  #              names(cx$temp), names(cx$pressure))
-  # signals <- signals[!is.null(signals)]
-
   # get time index
-  #t_index <- as.POSIXlt(zoo::index(cx$mdata), origin = "1970-01-01", tz = cx$tzone)
   t_index <- as.POSIXlt(zoo::index(cx$mdata), tz = cx$tzone)
   # extract xts object
   dx <- cx$mdata
   # creat year & month columns
   dx$year <- lubridate::year(t_index)
   dx$month <- lubridate::month(t_index)
-  # calucate monthly coverages
 
+  # calculate monthly means
   dout <- as.data.frame(dx) %>%
     dplyr::group_by(year, month) %>%
     dplyr::summarise(dplyr::across(.cols = signals, ~mean(.x, na.rm = TRUE))) %>%
-    dplyr::mutate(across(.cols = signals, ~round(.x, 2))) %>%
+    dplyr::mutate(across(.cols = signals, ~round(.x, 3))) %>%
     dplyr::mutate(month = lubridate::month(month, label = TRUE, locale = "en_IN")) %>%
     dplyr::ungroup()
 
+  # calculate means of monthly means
   if (mom) {
     dout <- dout %>%
       dplyr::group_by(month) %>%
       dplyr::summarise(dplyr::across(.cols = signals, ~mean(.x, na.rm = TRUE))) %>%
-      dplyr::mutate(across(.cols = signals, ~round(.x, 2))) %>%
-      #dplyr::mutate(month = lubridate::month(month, label = TRUE, locale = "en_IN")) %>%
+      dplyr::mutate(across(.cols = signals, ~round(.x, 3))) %>%
+      dplyr::mutate(month = lubridate::month(month, label = TRUE, locale = "en_IN")) %>%
       dplyr::ungroup()
   }
 

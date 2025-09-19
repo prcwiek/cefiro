@@ -1,9 +1,9 @@
 #' c_coverage
 #'
 #' Function presents coverage of wind measuremetn data.
-#' #' @param cx c_mseries object with data and information about wind measurement\cr
+#' @param cx c_mseries object with data and information about wind measurement\cr
 #' or a numeric vector.
-#' #' @param signals character, name(s) of signal(s). If NULL, the main\cr
+#' @param signals character, name(s) of signal(s). If NULL, the main\cr
 #' signal is used.
 #'
 #' @export
@@ -25,14 +25,14 @@ c_coverage <- function(cx = NULL, signals = NULL) {
   }
 
   # get time index
-  #t_index <- as.POSIXlt(zoo::index(cx$mdata), origin = "1970-01-01", tz = cx$tzone)
   t_index <- as.POSIXlt(zoo::index(cx$mdata), tz = cx$tzone)
   # extract xts object
   dx <- cx$mdata
-  # creat year & month columns
+  # create year & month columns
   dx$year <- lubridate::year(t_index)
   dx$month <- lubridate::month(t_index)
-  # calucate monthly coverages
+
+  # calculate monthly coverage
   dout <- as.data.frame(dx) %>%
     dplyr::group_by(year, month) %>%
     dplyr::summarise(dplyr::across(.cols = tidyselect::all_of(signals), ~(1-sum(is.na(.x))/length(.x)))) %>%
