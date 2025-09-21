@@ -1,10 +1,8 @@
 ---
-title: "Working with cefiro package"
-author: "Pawel Cwiek"
-date: "`r Sys.Date()`"
+title: "Simple Calculations and Plots for Wind Measurement Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Working with cefiro package}
+  %\VignetteIndexEntry{pmetar}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -13,12 +11,14 @@ editor_options:
   chunk_output_type: inline
 ---
 
-```{r setup, include = FALSE}
+```{r, label = "set options", include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  tidy = FALSE
 )
 ```
+
 
 # Package cefiro
 
@@ -32,9 +32,7 @@ Wind resource data from the tall Risø met mast.
   
 Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne (2021). 
 Wind resource data from the tall Risø met mast. Technical University of Denmark. Dataset.
-<https://doi.org/10.11583/DTU.14153204.v1>
-
-<https://doi.org/10.11583/DTU.14153204.v1>
+<https://doi.org/10.11583/DTU.c.5405286.v4>
 
 
 ```{r example wind measurement data}
@@ -215,3 +213,5 @@ c_means(dm, mom = TRUE) |>
 ```
 
 ### More soon...
+
+
