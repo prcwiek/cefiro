@@ -4,7 +4,7 @@
 \alias{c_shear}
 \title{c_shear}
 \usage{
-c_shear(cx = NULL, ws_signals = NULL)
+c_shear(cx = NULL, ws_signals = NULL, numeric_directions = TRUE)
 }
 \arguments{
 \item{cx}{c_mseries object with data and information about wind measurement\cr
@@ -12,6 +12,9 @@ or a numeric vector.}
 
 \item{ws_signals}{character, name(s) of wind speed signal(s). If NULL, the main\cr
 signal is used.}
+
+\item{numeric_directions}{logical, if TRUE directions as numbers,\cr
+otherwise as directions names}
 }
 \description{
 Create a c_shear object

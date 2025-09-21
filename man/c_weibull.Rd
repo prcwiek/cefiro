@@ -4,7 +4,7 @@
 \alias{c_weibull}
 \title{c_weibull}
 \usage{
-c_weibull(c, k, ...)
+c_weibull(c, k, ws = 5, ro = 1.225, ...)
 }
 \arguments{
 \item{c}{scale factor}
@@ -14,6 +14,8 @@ c_weibull(c, k, ...)
 \item{ws}{wind speed}
 
 \item{ro}{air density}
+
+\item{...}{further arguments passed to or from other methods.}
 }
 \value{
 Function return a list of numeric values of a probability for a given wind speed.

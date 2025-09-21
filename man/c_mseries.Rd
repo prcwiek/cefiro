@@ -60,7 +60,9 @@ signal will be selected.}
 
 \item{name}{character; name of measurement site.}
 
-\item{tzone}{character; tzone = "UTC"}
+\item{tzone}{character; tzone = "UTC".}
+
+\item{...}{further arguments passed to or from other methods.}
 }
 \value{
 c_mseries object with measurement data and information about a measurement site
