@@ -1,7 +1,7 @@
 Package: cefiro
 Type: Package
-Title: Simple calculations and plots for wind measurement data
-Version: 0.0.0.9210
+Title: Simple Calculations and Plots for Wind Measurement Data
+Version: 0.0.0.9212
 Authors@R: c(
             person("Pawel", "Cwiek", , "prc.altodato@gmail.com", role = c("aut", "cre")),
             person("Kurt Schaldemose", "Hansen", role = "ctb",
@@ -18,21 +18,30 @@ Authors@R: c(
                    Collection. https://doi.org/10.11583/DTU.c.5405286.v4") 
             )
 Maintainer: Pawel Cwiek <prc.altodato@gmail.com>
-Description: Simple calculations and plots for wind measurement data
+Description: Simple calculations and plots for wind measurement data.
 License: GPL (>= 3)
 Depends:
-  R (>= 4.1),
-  base,
-  utils,
-  stats
+  R (>= 3.5),
+  stats,
+  utils
 Imports:
   dplyr,
   ggplot2,
+  graphics,
   lubridate,
   magrittr,
   stringr,
+  tibble,
   tidyselect,
-  xts
+  xts,
+  zoo
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat,
+    gt,
+    RColorBrewer
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: yes
