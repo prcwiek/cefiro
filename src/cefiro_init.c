@@ -2,10 +2,13 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-extern void calculate_shear_c(int *n, double *ws1, double *ws2, double *dir, double *hl, double *hh, double *shear);
+extern void calculate_shear_c(int *n, double *ws1, double *ws2, double *dir,
+                              double *hl, double *hh,
+                              double *count, double *wsl, double *wsh,
+                              double *shear);
 
 static const R_CMethodDef cMethods[] = {
-  {"calculate_shear_c", (DL_FUNC) &calculate_shear_c, 7},
+  {"calculate_shear_c", (DL_FUNC) &calculate_shear_c, 10},
   {NULL, NULL, 0}
 };
 
