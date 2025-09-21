@@ -36,9 +36,12 @@
 #' @param wd_main character; name of main wind direction signal. If NULL, the highest\cr
 #' signal will be selected.
 #' @param name character; name of measurement site.
-#' @param tzone character; tzone = "UTC"
+#' @param tzone character; tzone = "UTC".
+#' @param ... further arguments passed to or from other methods.
 #'
 #' @return c_mseries object with measurement data and information about a measurement site
+#'
+#' @importFrom graphics hist
 #'
 #' @examples
 #' \dontrun{
@@ -52,6 +55,8 @@
 #' p_col = "P8", p_h = 8,
 #' name = "Test mast")
 #' }
+#'
+#' @importFrom stats median
 #'
 #' @export
 c_mseries <- function(mdata, date_col, ws_col, ws_h, ws_sd_col,
@@ -109,12 +114,12 @@ c_mseries.default <- function(mdata = NULL, date_col = NULL,
   dout <- cbind(dout, dcheck)
   dout <- dout[, n_index]
 
-  wind_speed <- as.list(setNames(ws_h, ws_col))
-  wind_dir <- as.list(setNames(dir_h, dir_col))
+  wind_speed <- as.list(stats::setNames(ws_h, ws_col))
+  wind_dir <- as.list(stats::setNames(dir_h, dir_col))
   if (is.null(ws_sd_col)) {
     wind_sd <- NULL
   } else {
-    wind_sd <- as.list(setNames(ws_h, ws_sd_col))
+    wind_sd <- as.list(stats::setNames(ws_h, ws_sd_col))
   }
 
 
@@ -134,21 +139,16 @@ c_mseries.default <- function(mdata = NULL, date_col = NULL,
                  wind_speed = wind_speed,
                  wind_dir = wind_dir,
                  wind_sd = wind_sd,
-                 temp = as.list(setNames(t_h, t_col)),
-                 pressure = as.list(setNames(p_h, p_col)),
+                 temp = as.list(stats::setNames(t_h, t_col)),
+                 pressure = as.list(stats::setNames(p_h, p_col)),
                  main_wind_speed = main_wind_speed, main_wind_dir = main_wind_dir,
                  name = name,
                  tzone = tzone), class = "c_mseries")
 }
 
 #' @export
-is.c_mseries <- function(object) {
-  inherits(object, "c_mseries")
-}
-
-#' @export
 print.c_mseries <- function(x, ...) {
-  if (!is.c_mseries(x)) {
+  if (!is_c_mseries(x)) {
     stop("cefiro package error: Invalid input format! Argument is not a m_series x.", call. = FALSE)
   }
   cat("Measurement time series: ", x$name," \n")
@@ -175,7 +175,7 @@ print.c_mseries <- function(x, ...) {
 hist.c_mseries <- function(x, signal = NULL, col = "blue", freq = FALSE,
                            start_date = NULL, end_date = NULL,
                            vmin = 0, vmax = 30, ...) {
-  if (!is.c_mseries(x)) {
+  if (!is_c_mseries(x)) {
     stop("cefiro package error: Invalid input format! Argument is not a m_series x.", call. = FALSE)
   }
 
@@ -259,15 +259,14 @@ hist.c_mseries <- function(x, signal = NULL, col = "blue", freq = FALSE,
        main = paste0("Measurements: ", x$name),
        xlab = paste0(signal_name, signal, units_name, " at ", h, " m"),
        ylab = t_ylab,
-       col = col,
-       ...)
+       col = col)
 }
 
 #' @export
 plot.c_mseries <- function(x, signal = NULL, col = "blue", lty = "solid",
                            start_date = NULL, end_date = NULL,
                            legend.loc = "topright", ylim = NULL, ...) {
-  if (!is.c_mseries(x)) {
+  if (!is_c_mseries(x)) {
     stop("cefiro package error: Invalid input format! Argument is not a c_mseries x.",
          call. = FALSE)
   }
@@ -389,7 +388,7 @@ min.c_mseries <- function(x, signal = NULL, ...) {
 
 #' @export
 summary.c_mseries <- function(object, ...) {
-  if (!is.c_mseries(object)) {
+  if (!is_c_mseries(object)) {
     stop("cefiro package error: Invalid input format! Argument is not a m_series object.", call. = FALSE)
   }
   cat("Measurement time series: ", object$name," \n")
