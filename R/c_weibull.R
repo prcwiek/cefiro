@@ -7,6 +7,7 @@
 #' @param k shape factor
 #' @param ws wind speed
 #' @param ro air density
+#' @param ... further arguments passed to or from other methods.
 #'
 #' @return Function return a list of numeric values of a probability for a given wind speed.
 #' Additionally for the given c and k the function returns mean wind speed, median wind speed,
@@ -18,7 +19,7 @@
 #' c_weibull(7, 2, 5, 1.225)
 #'
 #' @export
-c_weibull <- function(c, k, ...) {
+c_weibull <- function(c, k, ws = 5.0, ro = 1.225, ...) {
   UseMethod("c_weibull")
 }
 
