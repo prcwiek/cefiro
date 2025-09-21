@@ -6,13 +6,15 @@
 #' or a numeric vector.
 #' @param ws_signals character, name(s) of wind speed signal(s). If NULL, the main\cr
 #' signal is used.
+#' @param numeric_directions logical, if TRUE directions as numbers,\cr
+#' otherwise as directions names
 #'
 #' @importFrom magrittr %>%
 #'
 #' @export
-c_shear <- function(cx = NULL, ws_signals = NULL) {
+c_shear <- function(cx = NULL, ws_signals = NULL, numeric_directions = TRUE) {
   # check if cx is c_mseries object
-  if (!is.c_mseries(cx))  {
+  if (!is_c_mseries(cx))  {
     stop("cefiro package error: Invalid input format! Argument is not c_mseries object or a vector.",
          call. = FALSE)
   }
@@ -35,6 +37,7 @@ c_shear <- function(cx = NULL, ws_signals = NULL) {
   # get information about provided wind speed signals
   ws1_h <- as.numeric(cx$wind_speed[ws_signals[1]])
   ws2_h <- as.numeric(cx$wind_speed[ws_signals[2]])
+
   # check heights and switch if necessary
   if (ws1_h > ws2_h) {
     ws_temp <- ws1_h
@@ -42,21 +45,11 @@ c_shear <- function(cx = NULL, ws_signals = NULL) {
     ws2_h <- ws_temp
     rm(ws_temp)
   }
+
   ws1_n <- names(cx$wind_speed[ws_signals[1]])
   ws2_n <- names(cx$wind_speed[ws_signals[2]])
   ws1_data <- as.numeric(cx$mdata[, ws1_n])
   ws2_data <- as.numeric(cx$mdata[, ws2_n])
-
-
-  # if (ws2_h < ws1_h) {
-  #   ws_signals <- c(ws_signals[2], ws_signals[1])
-  #   ws1_h <- as.numeric(cx$wind_speed[ws_signals[1]])
-  #   ws2_h <- as.numeric(cx$wind_speed[ws_signals[2]])
-  #   ws1_n <- names(cx$wind_speed[ws_signals[1]])
-  #   ws2_n <- names(cx$wind_speed[ws_signals[2]])
-  #   ws1_data <- as.numeric(cx$mdata[, ws1_n])
-  #   ws2_data <- as.numeric(cx$mdata[, ws2_n])
-  # }
 
   # get information about main direction signal
   main_dir_n <- as.character(cx$main_wind_dir)
@@ -67,57 +60,42 @@ c_shear <- function(cx = NULL, ws_signals = NULL) {
   shear_input <- data.frame(ws1_data, ws2_data, main_dir_data) %>%
     dplyr::filter(complete.cases(.))
 
-  # dout <- calculate_shear(shear_input$ws1_data, shear_input$ws2_data,
-  #                         shear_input$main_dir_data,
-  #                         ws1_h, ws2_h)
 
-  # convert 360 to 0
-  #shear_input$main_dir_data[which(shear_input$main_dir_data == 360)] <- 0
+  # initialize input vectors for .C call
+  count_in <- rep(0,16)   # count of records in each of 16 sectors, from 0 to 337.5
+  shear_in <- rep(0,16)   # average shear values in each secotr
+  wsl_in <- rep(0,16)     # average wind speed values at  the lower level in each sector
+  wsh_in <- rep(0,16)     # average wind speed values at  the lower level in each sector
 
-  shear_out <- rep(0,16)
+  # find size of vector to pass to Fortran
   n <- as.integer(length(shear_input$ws1_data))
+
   resp <- .C("calculate_shear_c", n = as.integer(n),
              ws1 = as.double(shear_input$ws1_data), ws2 = as.double(shear_input$ws2_data),
              dir = as.double(shear_input$main_dir_data),
-             hl = as.double(ws1_h), hh= as.double(ws2_h),
-             shear = as.double(shear_out))
-  dout <- resp$shear
+             hl = as.double(ws1_h), hh = as.double(ws2_h),
+             count = as.double(count_in),
+             wsl = as.double(wsl_in),
+             wsh = as.double(wsh_in),
+             shear = as.double(shear_in))
 
-  # # create breaks
-  # breaks <- seq(0, 360, 15)
-  #
-  # # get data for calculating shear
-  # # shear_data <- dplyr::as_tibble(cx$mdata[, c(ws_signals, main_dir_n)]) %>%
-  # #   dplyr::mutate(alpha = calculate_alpha(as.numeric(cx$mdata[,ws1_n]),
-  # #                                         as.numeric(cx$mdata[,ws2_n]),
-  # #                                         ws1_h, ws2_h)) %>%
-  # #   dplyr::mutate(dir_cut = cut(as.numeric(cx$mdata[, main_dir_n]),
-  # #                               breaks = c(breaks, 375),
-  # #                               ordered_result = TRUE,
-  # #                               right = FALSE)) %>%
-  # #   dplyr::group_by(dir_cut) %>%
-  # #   dplyr::summarise(alpha_mean = mean(alpha))
-  # shear_data <- shear_input %>%
-  #   dplyr::mutate(alpha = calculate_alpha(ws1_data,
-  #                                         ws2_data,
-  #                                         ws1_h, ws2_h)) %>%
-  #   dplyr::mutate(dir_cut = cut(main_dir_data,
-  #                               breaks = c(breaks, 375),
-  #                               ordered_result = TRUE,
-  #                               right = FALSE)) %>%
-  #   dplyr::group_by(dir_cut) %>%
-  #   dplyr::summarise(alpha_mean = mean(alpha))
-  #
-  #
-  # #shear_data_binned <- cut(shear_data[, main_dir], breaks = c(breaks, 390), ordered_result = TRUE, right = FALSE)
-  # #print(shear_data)
-  # dout <- data.frame(dir = seq(0,330, 30), alpha = 0)
-  # dout$alpha[1] <- mean(shear_data$alpha_mean[1], shear_data$alpha_mean[24])
-  # i <- 2
-  # for (iter in seq(2, 23, 2)) {
-  #   dout$alpha[i] <- mean(shear_data$alpha_mean[iter], shear_data$alpha_mean[iter+1])
-  #   i <- i + 1
-  # }
+  dout <- tibble::tibble(sector = round(seq(from = 0, to = 337.5, by = 22.5) ,1),
+                         count = round(resp$count, 0),
+                         ws1 = round(resp$wsl, 3),
+                         ws2 = round(resp$wsh, 3),
+                         shear = resp$shear)
+
+  # rename wind speed signals names
+  names(dout)[3] <- ws1_n
+  names(dout)[4] <- ws2_n
+
+  if (!numeric_directions) {
+    directions_names <- c("N", "NNE", "NE", "ENE",
+                          "E", "ESE", "SE", "SSE",
+                          "S", "SSW", "SW", "WSW",
+                          "W", "WNW", "NW", "NNW")
+    dout$sector <- directions_names
+  }
 
   return(dout)
 }
