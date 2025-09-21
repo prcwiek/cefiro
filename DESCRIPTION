@@ -1,21 +1,21 @@
 Package: cefiro
 Type: Package
 Title: Simple calculations and plots for wind measurement data
-Version: 0.0.0.9200
+Version: 0.0.0.9210
 Authors@R: c(
             person("Pawel", "Cwiek", , "prc.altodato@gmail.com", role = c("aut", "cre")),
             person("Kurt Schaldemose", "Hansen", role = "ctb",
-                   comment = "Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
-                   Wind resource data from the tall Risø met mast. Technical University of Denmark.
-                   Dataset. https://doi.org/10.11583/DTU.14153204.v1"),
+                   comment = "Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
+                   Resource  data. Technical University of Denmark.
+                   Collection. https://doi.org/10.11583/DTU.c.5405286.v4"),
             person("Nikola", "Vasiljevic", role = "ctb",
-                   comment = "Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
-                   Wind resource data from the tall Risø met mast. Technical University of Denmark.
-                   Dataset. https://doi.org/10.11583/DTU.14153204.v1"),
+                   comment = "Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
+                   Resource  data. Technical University of Denmark.
+                   Collection. https://doi.org/10.11583/DTU.c.5405286.v4"),
             person("Steen Arne", "Sørensen", role = "ctb",
-                   comment = "Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
-                   Wind resource data from the tall Risø met mast. Technical University of Denmark.
-                   Dataset. https://doi.org/10.11583/DTU.14153204.v1") 
+                   comment = "Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne (2021).
+                   Resource  data. Technical University of Denmark.
+                   Collection. https://doi.org/10.11583/DTU.c.5405286.v4") 
             )
 Maintainer: Pawel Cwiek <prc.altodato@gmail.com>
 Description: Simple calculations and plots for wind measurement data
