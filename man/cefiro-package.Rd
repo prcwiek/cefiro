@@ -4,7 +4,7 @@
 \name{cefiro-package}
 \alias{cefiro}
 \alias{cefiro-package}
-\title{cefiro: Simple calculations and plots for wind measurement data}
+\title{cefiro: Simple Calculations and Plots for Wind Measurement Data}
 \description{
 Cefiro
 }
@@ -13,9 +13,9 @@ Cefiro
 
 Other contributors:
 \itemize{
-  \item Kurt Schaldemose Hansen (Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021). Wind resource data from the tall Risø met mast. Technical University of Denmark. Dataset. https://doi.org/10.11583/DTU.14153204.v1) [contributor]
-  \item Nikola Vasiljevic (Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021). Wind resource data from the tall Risø met mast. Technical University of Denmark. Dataset. https://doi.org/10.11583/DTU.14153204.v1) [contributor]
-  \item Steen Arne Sørensen (Hansen, ; Vasiljevic, Nikola; Sørensen, Steen Arne (2021). Wind resource data from the tall Risø met mast. Technical University of Denmark. Dataset. https://doi.org/10.11583/DTU.14153204.v1) [contributor]
+  \item Kurt Schaldemose Hansen (Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne (2021). Resource data. Technical University of Denmark. Collection. https://doi.org/10.11583/DTU.c.5405286.v4) [contributor]
+  \item Nikola Vasiljevic (Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne (2021). Resource data. Technical University of Denmark. Collection. https://doi.org/10.11583/DTU.c.5405286.v4) [contributor]
+  \item Steen Arne Sørensen (Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne (2021). Resource data. Technical University of Denmark. Collection. https://doi.org/10.11583/DTU.c.5405286.v4) [contributor]
 }
 
 }
