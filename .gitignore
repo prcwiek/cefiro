@@ -69,7 +69,6 @@ src/*.o
 src/*.o-*
 src/*.d
 src/*.so
-src/cefir.so
 *.dll
 
 # ignore all files in a directory others
