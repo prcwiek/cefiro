@@ -29,7 +29,7 @@ c_find_weibull <- function(cx = NULL, signal = NULL,
                            iter = 50) {
 
   # check if cx is c_mseries object
-  if (is.null(cx) & !is.c_mseries(cx)) {
+  if (is.null(cx) & !is_c_mseries(cx)) {
     stop("cefiro package error: Invalid input format! Argument is not a c_mseries object.",
          call. = FALSE)
   }
@@ -41,7 +41,7 @@ c_find_weibull <- function(cx = NULL, signal = NULL,
   }
 
   # get data series
-  if (!is.null(cx) & is.c_mseries(cx)) {
+  if (!is.null(cx) & is_c_mseries(cx)) {
     if (!is.null(signal)) {
       if (signal %in% names(cx$wind_speed)) {
         x <- as.numeric(cx$mdata[,signal])
@@ -105,7 +105,7 @@ bisection <- function(x, kmin, kmax, eps, iter) {
       return(k)
     }
   }
-  retrun(NULL)
+  return(NULL)
 }
 
 

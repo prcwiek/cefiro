@@ -9,9 +9,12 @@
 #' @export
 c_coverage <- function(cx = NULL, signals = NULL) {
   # check if cx is c_mseries object
-  if (!is.c_mseries(cx))  {
+  if (!is_c_mseries(cx))  {
     stop("cefiro package error: Invalid input format! Argument is not c_mseries object or a vector.", call. = FALSE)
   }
+
+  #
+  year <- month <- NULL
 
   # get all signals names for calculating coverage
   signals_names <- c(names(cx$wind_speed), names(cx$wind_dir), names(cx$temp), names(cx$pressure))
@@ -36,7 +39,7 @@ c_coverage <- function(cx = NULL, signals = NULL) {
   dout <- as.data.frame(dx) %>%
     dplyr::group_by(year, month) %>%
     dplyr::summarise(dplyr::across(.cols = tidyselect::all_of(signals), ~(1-sum(is.na(.x))/length(.x)))) %>%
-    dplyr::mutate(across(.cols = tidyselect::all_of(signals), ~round(.x, 4))) %>%
+    dplyr::mutate(dplyr::across(.cols = tidyselect::all_of(signals), ~round(.x, 4))) %>%
     dplyr::mutate(month = lubridate::month(month, label = TRUE, locale = "en_IN")) %>%
     dplyr::ungroup()
 

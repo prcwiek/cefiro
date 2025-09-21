@@ -18,6 +18,7 @@
 #' @param hcolor character, histogram color
 #'
 #' @importFrom magrittr %>%
+#' @importFrom stats complete.cases
 #'
 #' @examples
 #' \dontrun{
@@ -105,12 +106,12 @@ c_weibull_plot <- function(cx = NULL, signal = NULL,
       plot_generated <- TRUE
     }
   } else {
-    if (!is.c_mseries(cx)) {
+    if (!is_c_mseries(cx)) {
       stop("cefiro package error: Invalid input format! Argument is not a c_mseries object.",
            call. = FALSE)
     }
     # when c_mseries is provided in inputs, get data series
-    if (!is.null(cx) & is.c_mseries(cx)) {
+    if (!is.null(cx) & is_c_mseries(cx)) {
       if (!is.null(signal)) {
         if (signal %in% names(cx$wind_speed)) {
           x <- as.numeric(cx$mdata[,signal])
@@ -209,5 +210,4 @@ c_weibull_plot <- function(cx = NULL, signal = NULL,
     }
 
   return(p)
-
 }

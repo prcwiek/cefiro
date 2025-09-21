@@ -13,7 +13,7 @@
 #' @export
 c_windrose <- function(cx, signals = NULL, col = "blue") {
   # check if cx is c_mseries object
-  if (!is.c_mseries(cx)) {
+  if (!is_c_mseries(cx)) {
     stop("cefiro package error: Invalid input format! Argument is not a c_mseries object.",
          call. = FALSE)
   }

@@ -9,7 +9,7 @@
 #' @export
 c_means <- function(cx = NULL, mom = FALSE, signals = NULL) {
   # check if cx is c_mseries object
-  if (!is.null(cx) & !is.c_mseries(cx))  {
+  if (!is.null(cx) & !is_c_mseries(cx))  {
     stop("cefiro package error: Invalid input format! Argument is not c_mseries object or a vector.", call. = FALSE)
   }
 
@@ -36,7 +36,7 @@ c_means <- function(cx = NULL, mom = FALSE, signals = NULL) {
   dout <- as.data.frame(dx) %>%
     dplyr::group_by(year, month) %>%
     dplyr::summarise(dplyr::across(.cols = signals, ~mean(.x, na.rm = TRUE))) %>%
-    dplyr::mutate(across(.cols = signals, ~round(.x, 3))) %>%
+    dplyr::mutate(dplyr::across(.cols = signals, ~round(.x, 3))) %>%
     dplyr::mutate(month = lubridate::month(month, label = TRUE, locale = "en_IN")) %>%
     dplyr::ungroup()
 
@@ -45,8 +45,8 @@ c_means <- function(cx = NULL, mom = FALSE, signals = NULL) {
     dout <- dout %>%
       dplyr::group_by(month) %>%
       dplyr::summarise(dplyr::across(.cols = signals, ~mean(.x, na.rm = TRUE))) %>%
-      dplyr::mutate(across(.cols = signals, ~round(.x, 3))) %>%
-      dplyr::mutate(month = lubridate::month(month, label = TRUE, locale = "en_IN")) %>%
+      dplyr::mutate(dplyr::across(.cols = signals, ~round(.x, 3))) %>%
+      #dplyr::mutate(month = lubridate::month(month, label = TRUE, locale = "en_IN")) %>%
       dplyr::ungroup()
   }
 
