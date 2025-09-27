@@ -4,7 +4,7 @@
 
 extern void calculate_shear_c(int *n, double *ws1, double *ws2, double *dir,
                               double *hl, double *hh,
-                              double *count, double *wsl, double *wsh,
+                              double *records, double *wsl, double *wsh,
                               double *shear);
 
 static const R_CMethodDef cMethods[] = {

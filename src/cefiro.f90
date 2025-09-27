@@ -15,12 +15,12 @@ contains
 
   end function calculate_alpha
 
-  subroutine calculate_shear(n, ws1, ws2, dir, hl, hh, count, wsl, wsh, shear) &
+  subroutine calculate_shear(n, ws1, ws2, dir, hl, hh, records, wsl, wsh, shear) &
   &bind(C, name = "calculate_shear_c")
     integer(c_int), intent(in)            :: n
     real(c_double), intent(in)            :: ws1(n), ws2(n), dir(n)
     real(c_double), intent(in)            :: hl, hh
-    real(c_double), intent(in out)        :: count(16)
+    real(c_double), intent(in out)        :: records(16)
     real(c_double), intent(in out)        :: wsl(16)
     real(c_double), intent(in out)        :: wsh(16)
     real(c_double), intent(in out)        :: shear(16)
@@ -32,7 +32,7 @@ contains
 
     ! clean shear table
     do i = 1, 16
-      count(i) = 0
+      records(i) = 0
       wsl(i) = 0
       wsh(i) = 0
       shear(i) = 0
@@ -42,7 +42,7 @@ contains
     do i=1, 16
       !alpha_dir(i, 1) = (i-1) * 22.5  ! sectors
       alpha_dir(i, 1) = 0   ! shear
-      alpha_dir(i, 2) = 0   ! count
+      alpha_dir(i, 2) = 0   ! records
       alpha_dir(i, 3) = 0   ! wsl (wind speeds at lower level)
       alpha_dir(i, 4) = 0   ! ws2 (wind speeds at higher level)
     end do
@@ -162,10 +162,10 @@ contains
       end if
     end do
 
-  ! averaging, but not for count
+  ! averaging, but not for records
   do i=1, 16
     shear(i) = alpha_dir(i, 1) / alpha_dir(i, 2)
-    count(i) = alpha_dir(i, 2)
+    records(i) = alpha_dir(i, 2)
     wsl(i) = alpha_dir(i, 3) / alpha_dir(i, 2)
     wsh(i) = alpha_dir(i, 4) / alpha_dir(i, 2)
   end do
