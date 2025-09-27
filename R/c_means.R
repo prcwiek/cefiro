@@ -1,16 +1,27 @@
 #' c_means
 #'
-#' @param cx c_mseries object with data and information about wind measurement\cr
+#' @param cx c_mseries object with data and information about wind measurement.\cr
 #' or a numeric vector.
-#' @param mom logical, if TRUE, means of monthly means will be calculated
-#' @param signals character, name(s) of signal(s). If NULL, the main\cr
+#' @param mom logical, if TRUE, means of monthly means will be calculated.
+#' @param signals character, name(s) of signal(s). If NULL, the main.\cr
 #' signal is used.
+#'
+#' @return Function returns a tibble with monthly means or with means of monthly means.
+#'
+#' @examples
+#' \dontrun{
+#' c_means(cx)
+#' c_means(cx, mom = TRUE)
+#' }
+#'
+#' @importFrom magrittr %>%
 #'
 #' @export
 c_means <- function(cx = NULL, mom = FALSE, signals = NULL) {
   # check if cx is c_mseries object
-  if (!is.null(cx) & !is_c_mseries(cx))  {
-    stop("cefiro package error: Invalid input format! Argument is not c_mseries object or a vector.", call. = FALSE)
+  if (!is_c_mseries(cx))  {
+    stop("cefiro package error: Invalid input format! Argument is not c_mseries object.",
+         call. = FALSE)
   }
 
   # get all signals names for calculating coverage

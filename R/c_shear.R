@@ -11,6 +11,16 @@
 #' @param numeric_directions logical, if TRUE directions as numbers,\cr
 #' otherwise as directions names
 #'
+#' @return Function return a tibble with wind shares values for 16 directions.
+#'
+#' @examples
+#' \dontrun{
+#' c_shear(cx, ws_signals = c("WS77", "WS125"))
+#' c_shear(cx, ws_signals = c("WS77", "WS125"), start_date = "1998-03-01", end_date = "1998-04-30")
+#' c_shear(cx, ws_signals = c("WS77", "WS125"), start_date = "1998-03-01")
+#' c_shear(cx, ws_signals = c("WS77", "WS125"), end_date = "1998-04-30")
+#' }
+#'
 #' @importFrom magrittr %>%
 #'
 #' @export
@@ -19,7 +29,7 @@ c_shear <- function(cx = NULL, ws_signals = NULL,
                     numeric_directions = TRUE) {
   # check if cx is c_mseries object
   if (!is_c_mseries(cx))  {
-    stop("cefiro package error: Invalid input format! Argument is not c_mseries object or a vector.",
+    stop("cefiro package error: Invalid input format! Argument is not c_mseries object.",
          call. = FALSE)
   }
   # check if ws_signals si NULL
