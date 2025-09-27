@@ -74,8 +74,6 @@ src/*.so
 # ignore all files in a directory others
 others/
 
-
-
 # Example code in package build process
 *-Ex.R
 
