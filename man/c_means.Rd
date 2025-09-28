@@ -7,14 +7,24 @@
 c_means(cx = NULL, mom = FALSE, signals = NULL)
 }
 \arguments{
-\item{cx}{c_mseries object with data and information about wind measurement\cr
+\item{cx}{c_mseries object with data and information about wind measurement.\cr
 or a numeric vector.}
 
-\item{mom}{logical, if TRUE, means of monthly means will be calculated}
+\item{mom}{logical, if TRUE, means of monthly means will be calculated.}
 
-\item{signals}{character, name(s) of signal(s). If NULL, the main\cr
+\item{signals}{character, name(s) of signal(s). If NULL, the main.\cr
 signal is used.}
+}
+\value{
+Function returns a tibble with monthly means or with means of monthly means.
 }
 \description{
 c_means
+}
+\examples{
+\dontrun{
+c_means(cx)
+c_means(cx, mom = TRUE)
+}
+
 }

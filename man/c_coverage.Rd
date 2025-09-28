@@ -4,7 +4,13 @@
 \alias{c_coverage}
 \title{c_coverage}
 \usage{
-c_coverage(cx = NULL, signals = NULL)
+c_coverage(
+  cx = NULL,
+  signals = NULL,
+  start_date = NULL,
+  end_date = NULL,
+  numeric_months = TRUE
+)
 }
 \arguments{
 \item{cx}{c_mseries object with data and information about wind measurement\cr
@@ -12,7 +18,27 @@ or a numeric vector.}
 
 \item{signals}{character, name(s) of signal(s). If NULL, the main\cr
 signal is used.}
+
+\item{start_date}{character; start date in the format YYYY-MM-DD.}
+
+\item{end_date}{character; end date in the format YYYY-MM-DD.}
+
+\item{numeric_months}{logical, if TRUE it returns months as numbers,\cr
+otherwise as months names}
+}
+\value{
+Function returns a tibble with coverage values for signals.
 }
 \description{
-Function presents coverage of wind measuremetn data.
+Function presents coverage of wind measurement data.
+}
+\examples{
+\dontrun{
+c_coverage(cx, ws_signals = c("WS77", "WS125"))
+c_coverage(cx, ws_signals = c("WS77", "WS125"), numeric_months = TRUE)
+c_shear(cx, ws_signals = c("WS77", "WS125"), start_date = "1998-03-01", end_date = "1998-04-30")
+c_shear(cx, ws_signals = c("WS77", "WS125"), start_date = "1998-03-01")
+c_shear(cx, ws_signals = c("WS77", "WS125"), end_date = "1998-04-30")
+}
+
 }

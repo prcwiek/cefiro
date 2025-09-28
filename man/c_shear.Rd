@@ -4,7 +4,13 @@
 \alias{c_shear}
 \title{c_shear}
 \usage{
-c_shear(cx = NULL, ws_signals = NULL, numeric_directions = TRUE)
+c_shear(
+  cx = NULL,
+  ws_signals = NULL,
+  start_date = NULL,
+  end_date = NULL,
+  numeric_directions = TRUE
+)
 }
 \arguments{
 \item{cx}{c_mseries object with data and information about wind measurement\cr
@@ -13,9 +19,26 @@ or a numeric vector.}
 \item{ws_signals}{character, name(s) of wind speed signal(s). If NULL, the main\cr
 signal is used.}
 
+\item{start_date}{character; start date in the format YYYY-MM-DD.}
+
+\item{end_date}{character; end date in the format YYYY-MM-DD.}
+
 \item{numeric_directions}{logical, if TRUE directions as numbers,\cr
 otherwise as directions names}
 }
+\value{
+Function returns a tibble with wind shares values for 16 directions.
+}
 \description{
 Create a c_shear object
+}
+\examples{
+\dontrun{
+c_shear(cx, ws_signals = c("WS77", "WS125"))
+c_shear(cx, ws_signals = c("WS77", "WS125"), numeric_directions = FALSE)
+c_shear(cx, ws_signals = c("WS77", "WS125"), start_date = "1998-03-01", end_date = "1998-04-30")
+c_shear(cx, ws_signals = c("WS77", "WS125"), start_date = "1998-03-01")
+c_shear(cx, ws_signals = c("WS77", "WS125"), end_date = "1998-04-30")
+}
+
 }
