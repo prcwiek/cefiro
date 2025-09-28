@@ -11,11 +11,12 @@
 #' @param numeric_directions logical, if TRUE directions as numbers,\cr
 #' otherwise as directions names
 #'
-#' @return Function return a tibble with wind shares values for 16 directions.
+#' @return Function returns a tibble with wind shares values for 16 directions.
 #'
 #' @examples
 #' \dontrun{
 #' c_shear(cx, ws_signals = c("WS77", "WS125"))
+#' c_shear(cx, ws_signals = c("WS77", "WS125"), numeric_directions = FALSE)
 #' c_shear(cx, ws_signals = c("WS77", "WS125"), start_date = "1998-03-01", end_date = "1998-04-30")
 #' c_shear(cx, ws_signals = c("WS77", "WS125"), start_date = "1998-03-01")
 #' c_shear(cx, ws_signals = c("WS77", "WS125"), end_date = "1998-04-30")
@@ -42,6 +43,7 @@ c_shear <- function(cx = NULL, ws_signals = NULL,
     stop("cefiro package error: Invalid input! Too many wind speed signals provided.",
          call. = FALSE)
   }
+
   # check if a start date and an end date are in the period range of cx
   if (!is.null(start_date)) {
     if (as.POSIXct(start_date, tz = "UTC") < cx$start_date |
@@ -132,6 +134,7 @@ c_shear <- function(cx = NULL, ws_signals = NULL,
   names(dout)[3] <- ws1_n
   names(dout)[4] <- ws2_n
 
+  # Adjust directions names
   if (!numeric_directions) {
     directions_names <- c("N", "NNE", "NE", "ENE",
                           "E", "ESE", "SE", "SSE",
