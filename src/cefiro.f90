@@ -15,6 +15,55 @@ contains
 
   end function calculate_alpha
 
+
+  subroutine calculate_coverage(n, n_unique_year_month, year, month, signal, coverage)&
+  &bind(C, name = "calculate_coverage_c")
+    integer(c_int), intent(in)                :: n
+    integer(c_int), intent(in)                :: n_unique_year_month
+    integer(c_int), intent(in)                :: year(n)
+    integer(c_int), intent(in)                :: month(n)
+    real(c_double), intent(in)                :: signal(n)
+    real(c_double), intent(in out)            :: coverage(n_unique_year_month)
+
+    integer(c_int)                            :: i
+    integer(c_int)                            :: i_coverage
+    real(c_double)                            :: valid_records(n_unique_year_month)
+    real(c_double)                            :: invalid_records(n_unique_year_month)
+
+    ! clean records tablea
+    do i=1, n_unique_year_month
+      valid_records(i) = 0
+      invalid_records(i) = 0
+    end do
+
+    i_coverage = 1
+    do i=1, n-1
+      if (signal(i) /= -7777) then
+        valid_records(i_coverage) = valid_records(i_coverage) + 1
+      else
+        invalid_records(i_coverage) = invalid_records(i_coverage) + 1
+      end if
+
+      if (month(i) /= month(i+1)) then
+        i_coverage = i_coverage + 1
+      end if
+    end do
+
+    ! the last record
+    if (signal(n) /= -7777) then
+      valid_records(i_coverage) = valid_records(i_coverage) + 1
+    else
+        invalid_records(i_coverage) = invalid_records(i_coverage) + 1
+    end if
+
+
+
+    do i=1, n_unique_year_month
+      coverage(i) = valid_records(i) / (valid_records(i) + invalid_records(i))
+    end do
+
+  end subroutine calculate_coverage
+
   subroutine calculate_shear(n, ws1, ws2, dir, hl, hh, records, wsl, wsh, shear) &
   &bind(C, name = "calculate_shear_c")
     integer(c_int), intent(in)            :: n
