@@ -11,9 +11,16 @@ extern void calculate_coverage_c(int *n, int *n_unique_year_month,
                                  int *year, int *month,
                                  double *signal, double *coverage);
 
+extern void signal_summary_c(int *n, int *n_unique_year_month,
+                             int *year, int *month,
+                             double *signal, double *all_records, double *valid_records,
+                             double *coverage,
+                             double *mean_values, double *min_values, double *max_values);
+
 static const R_CMethodDef cMethods[] = {
   {"calculate_shear_c", (DL_FUNC) &calculate_shear_c, 10},
   {"calculate_coverage_c", (DL_FUNC) &calculate_coverage_c, 6},
+  {"signal_summary_c", (DL_FUNC) &signal_summary_c, 11},
   {NULL, NULL, 0}
 };
 

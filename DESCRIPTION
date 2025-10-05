@@ -1,7 +1,7 @@
 Package: cefiro
 Type: Package
 Title: Simple Calculations and Plots for Wind Measurement Data
-Version: 0.0.0.9215
+Version: 0.0.0.9216
 Authors@R: c(
             person("Pawel", "Cwiek", , "prc.altodato@gmail.com", role = c("aut", "cre")),
             person("Kurt Schaldemose", "Hansen", role = "ctb",

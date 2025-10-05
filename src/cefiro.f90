@@ -7,7 +7,10 @@ module cefiro
   public :: calculate_shear
 contains
 
-  real(c_double) function calculate_alpha(w_low, w_high, h_low, h_high) result(res)
+!**********************************************************
+!* Function fo  calculating wind shear aplha coefficient  *
+!**********************************************************
+  pure real(c_double) function calculate_alpha(w_low, w_high, h_low, h_high) result(res)
     real(c_double), intent(in) :: w_low, w_high
     real(c_double), intent(in) :: h_low, h_high
 
@@ -15,7 +18,79 @@ contains
 
   end function calculate_alpha
 
+!**********************************************************
+!* Single signal summary                                  *
+!**********************************************************
+  subroutine signal_summary(n, n_unique_year_month, year, month, signal,&
+  all_records, valid_records, coverage, mean_values, min_values, max_values)&
+  &bind(C, name = "signal_summary_c")
+    integer(c_int), intent(in)                :: n
+    integer(c_int), intent(in)                :: n_unique_year_month
+    integer(c_int), intent(in)                :: year(n)
+    integer(c_int), intent(in)                :: month(n)
+    real(c_double), intent(in)                :: signal(n)
+    real(c_double), intent(in out)            :: all_records(n_unique_year_month)
+    real(c_double), intent(in out)            :: valid_records(n_unique_year_month)
+    real(c_double), intent(in out)            :: coverage(n_unique_year_month)
+    real(c_double), intent(in out)            :: mean_values(n_unique_year_month)
+    real(c_double), intent(in out)            :: min_values(n_unique_year_month)
+    real(c_double), intent(in out)            :: max_values(n_unique_year_month)
 
+    integer(c_int)                            :: i
+    integer(c_int)                            :: i_coverage
+    real(c_double)                            :: invalid_records(n_unique_year_month)
+
+    ! clean records tablea
+    do i=1, n_unique_year_month
+      !valid_records(i) = 0
+      invalid_records(i) = 0
+    end do
+
+    i_coverage = 1
+    do i=1, n-1
+      if (signal(i) /= -7777) then
+        valid_records(i_coverage) = valid_records(i_coverage) + 1
+        mean_values(i_coverage) = mean_values(i_coverage) + signal(i)
+        if (signal(i) < min_values(i_coverage)) then
+          min_values(i_coverage) = signal(i)
+        end if
+        if (signal(i) > max_values(i_coverage)) then
+          max_values(i_coverage) = signal(i)
+        end if
+      else
+        invalid_records(i_coverage) = invalid_records(i_coverage) + 1
+      end if
+
+      if (month(i) /= month(i+1)) then
+        i_coverage = i_coverage + 1
+      end if
+    end do
+
+    ! the last record
+    if (signal(n) /= -7777) then
+      valid_records(i_coverage) = valid_records(i_coverage) + 1
+      mean_values(i_coverage) = mean_values(i_coverage) + signal(n)
+      if (signal(n) < min_values(i_coverage)) then
+        min_values(i_coverage) = signal(n)
+      end if
+      if (signal(n) > max_values(i_coverage)) then
+          max_values(i_coverage) = signal(n)
+      end if
+    else
+        invalid_records(i_coverage) = invalid_records(i_coverage) + 1
+    end if
+
+    do i=1, n_unique_year_month
+      all_records(i) = valid_records(i) + invalid_records(i)
+      coverage(i) = valid_records(i) / all_records(i)
+      mean_values(i) = mean_values(i) / valid_records(i)
+    end do
+
+  end subroutine signal_summary
+
+!**********************************************************
+!* Calculating data coverege for singal(s)                *
+!**********************************************************
   subroutine calculate_coverage(n, n_unique_year_month, year, month, signal, coverage)&
   &bind(C, name = "calculate_coverage_c")
     integer(c_int), intent(in)                :: n
@@ -56,14 +131,16 @@ contains
         invalid_records(i_coverage) = invalid_records(i_coverage) + 1
     end if
 
-
-
     do i=1, n_unique_year_month
       coverage(i) = valid_records(i) / (valid_records(i) + invalid_records(i))
     end do
 
   end subroutine calculate_coverage
 
+!**********************************************************
+!* Calculate shear from wind speeds at two level,         *
+!* using a direction signal                               *
+!**********************************************************
   subroutine calculate_shear(n, ws1, ws2, dir, hl, hh, records, wsl, wsh, shear) &
   &bind(C, name = "calculate_shear_c")
     integer(c_int), intent(in)            :: n
