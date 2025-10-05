@@ -2,8 +2,10 @@
 # cefiro
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
+[![CRAN](https://www.r-pkg.org/badges/version/cefiro)](https://cran.r-project.org/package=cefiro)
 [![](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 

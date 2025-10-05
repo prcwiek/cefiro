@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 ```
 
 <!-- badges: start -->
+[![CRAN](https://www.r-pkg.org/badges/version/cefiro)](https://cran.r-project.org/package=cefiro)
 [![](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
