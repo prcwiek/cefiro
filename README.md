@@ -14,7 +14,7 @@ measurement data.
 
 ### Installation
 
-Get the development version 0.0.9007 from github:
+Get the development version from github:
 
 ``` r
 # install.packages("devtools")
@@ -33,6 +33,4 @@ the tall Risø met mast.
 Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne
 (2021). Wind resource data from the tall Risø met mast. Technical
 University of Denmark. Dataset.
-<https://doi.org/10.11583/DTU.14153204.v1>
-
-<https://doi.org/10.11583/DTU.14153204.v1>
+<https://doi.org/10.11583/DTU.c.5405286.v4>
