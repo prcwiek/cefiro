@@ -9,7 +9,7 @@
 [![](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
-Package allows carry out simple calculations and plots for wind
+Package allows carry out simple calculations and prepare plots for wind
 measurement data.
 
 ### Installation
@@ -32,5 +32,5 @@ the tall Risø met mast.
 
 Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne
 (2021). Wind resource data from the tall Risø met mast. Technical
-University of Denmark. Dataset.
+University of Denmark. Dataset.  
 <https://doi.org/10.11583/DTU.c.5405286.v4>
