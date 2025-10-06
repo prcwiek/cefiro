@@ -149,12 +149,10 @@ c_mseries.default <- function(mdata = NULL, date_col = NULL,
 #' @export
 print.c_mseries <- function(x, ...) {
   if (!is_c_mseries(x)) {
-    stop("cefiro package error: Invalid input format! Argument is not a m_series x.", call. = FALSE)
+    stop("cefiro package error: Invalid input format! Argument is not a m_series", call. = FALSE)
   }
   cat("Measurement time series: ", x$name," \n")
-  #cat(sprintf("Start date: %s \n", as.character(x$start_date, format = "%Y-%m-%d %H:%M:%S")))
   cat(sprintf("Start date: %s \n", as.character(format(x$start_date, format = "%Y-%m-%d %H:%M:%S"))))
-  #cat(sprintf("End date: %s \n", as.character(x$end_date, format = "%Y-%m-%d %H:%M:%S")))
   cat(sprintf("End date: %s \n", as.character(format(x$end_date, format = "%Y-%m-%d %H:%M:%S"))))
   cat("------------------------------\n")
   cat(sprintf("Wind speed signal %s measured at height: %.2f\n", names(x$wind_speed), unlist(unname(x$wind_speed))),
