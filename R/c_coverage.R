@@ -1,5 +1,6 @@
-#' c_coverage
+#' Measurement data coverage
 #'
+#' @description
 #' Function presents coverage of wind measurement data.
 #' @param cx c_mseries object with data and information about wind measurement\cr
 #' or a numeric vector.

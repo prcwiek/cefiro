@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_windrose.R
 \name{c_windrose}
 \alias{c_windrose}
-\title{c_windrose}
+\title{Windrose plot}
 \usage{
 c_windrose(cx, signals = NULL, col = "blue")
 }

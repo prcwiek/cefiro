@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_means.R
 \name{c_means}
 \alias{c_means}
-\title{c_means}
+\title{Monthly means or Means of Monthyl Means}
 \usage{
 c_means(cx = NULL, mom = FALSE, signals = NULL)
 }
@@ -19,7 +19,8 @@ signal is used.}
 Function returns a tibble with monthly means or with means of monthly means.
 }
 \description{
-c_means
+Function create a table with monthly means for all or selected signals.
+It is also possible to create a table with means of monthly means.
 }
 \examples{
 \dontrun{

@@ -1,5 +1,6 @@
-#' c_windrose
+#' Windrose plot
 #'
+#' @description
 #' Plot a windrose from c_mseries object or a numeric vector.
 #'
 #' @param cx c_mseries object with data and information about wind measurement\cr

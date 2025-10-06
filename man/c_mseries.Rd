@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_mseries.R
 \name{c_mseries}
 \alias{c_mseries}
-\title{c_mseries}
+\title{Wind measurement data object}
 \usage{
 c_mseries(
   mdata,

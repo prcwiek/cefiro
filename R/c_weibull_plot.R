@@ -1,5 +1,6 @@
-#' c_weibull_plot
+#' Weibull distribution plot
 #'
+#' @description
 #' Plot Weibull distribution from c_mseries object or from a numeric vector\cr
 #' or with given c scale factor and k shape factor
 #'

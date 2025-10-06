@@ -1,5 +1,6 @@
-#' c_weibull
+#' Weibull distribution
 #'
+#' @description
 #' Weibull distribution function calculates probability for a given wind speed, a
 #' shape factor and a scale factor.
 #'
@@ -49,8 +50,8 @@ c_weibull.default <- function(c = 7.0, k = 2.0, ws = 5.0, ro = 1.225, ...) {
 
 #' @export
 print.c_weibull <- function(x,...) {
-  cat("Weibull distribution for simple wind energy calculations\n")
-  cat("--------------------------------------------------------\n")
+  cat("Weibull distribution\n")
+  cat("--------------------\n")
   cat(paste("Scale factor c:", format(x$scale_factor_c, digits = 3, zero_print = TRUE), "\n"))
   cat(paste("Shape factor k:", format(x$shape_factor_k, digits = 3), "\n"))
   cat("Mean wind speed:", format(x$mean_wind_speed,2, digits = 3), "m/s\n")
@@ -71,7 +72,8 @@ median.c_weibull <- function(x,...){
 }
 
 #' @export
-plot.c_weibull <- function(x, col = "blue", type = "l", lwd = 1,
+plot.c_weibull <- function(x, col = "blue", type = "l",
+                           lty= "solid", lwd = 1, pch = 16,
                            xlab = "Wind speed (m/s)",
                            ylab = "Probability",
                            ...){
@@ -87,14 +89,21 @@ plot.c_weibull <- function(x, col = "blue", type = "l", lwd = 1,
   plot(df_wdplot$ws, df_wdplot$p,
        col = col,
        type = type,
+       lty = lty,
        lwd = lwd,
+       pch = pch,
        xlab = xlab,
        ylab = ylab,
        ...)
 }
 
 #' @export
-hist.c_weibull <- function(x, col = "blue", freq = FALSE, ...){
+hist.c_weibull <- function(x, col = "blue", freq = FALSE,
+                           breaks = c(0:30),
+                           xlab = "Wind speed m/s",
+                           ylab = "Probability",
+                           main = "Histogram of Weibull Distribution",
+                           ...) {
   fstep <- 0.1
   rmin <- 0
   rmax <- 30
@@ -110,11 +119,26 @@ hist.c_weibull <- function(x, col = "blue", freq = FALSE, ...){
   dfhist <- unlist(append(dfhist, apply(df_wdplot, 1, function(x) matrix(data = x[1], nrow = x[2])[,1])), use.names = FALSE)
     hist(dfhist,
        freq = freq,
-       breaks = c(0:30),
-       main = "Histogram of Weibull Distribution",
-       xlab = "Wind speed m/s",
-       ylab = "Probability",
+       breaks = breaks,
+       main = main,
+       xlab = xlab,
+       ylab = ylab,
        col = col,
        ...)
 }
 
+#' Test if the object is a c_weibull object class
+#'
+#' @description
+#'
+#' This function returns `TRUE` for c_mseries,
+#' and `FALSE` for all other objects.
+#'
+#' @param x An object
+#'
+#' @return `TRUE` if the object inherits from the `c_weibull` class.
+#'
+#' @export
+is_c_weibull <- function(x) {
+  inherits(x, "c_weibull")
+}

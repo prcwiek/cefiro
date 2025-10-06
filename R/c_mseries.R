@@ -1,5 +1,6 @@
-#'  c_mseries
+#'  Wind measurement data object
 #'
+#' @description
 #' Create c_mseries object with data and information about wind measurement.
 #' The output c_mseries object consists of:
 #' \itemize{
@@ -435,6 +436,21 @@ summary.c_mseries <- function(object, ...) {
                 max(object, signal = item)),
         sep = "")
   }
+}
+
+#' Test if the object is a c_mseries
+#'
+#' @description
+#' This function returns `TRUE` for c_mseries,
+#' and `FALSE` for all other objects.
+#'
+#' @param x An object
+#'
+#' @return `TRUE` if the object inherits from the `c_mseries` class.
+#'
+#' @export
+is_c_mseries <- function(x) {
+  inherits(x, "c_mseries")
 }
 
 

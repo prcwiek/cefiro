@@ -1,11 +1,12 @@
-#' c_shear
+#' Directional wind shear
 #'
-#' Create a c_shear object
+#' @description
+#' Create a table with directional wind shear values for 16 sectors
+#' based on two measurement heights.
 #'
 #' @param cx c_mseries object with data and information about wind measurement\cr
 #' or a numeric vector.
-#' @param ws_signals character, name(s) of wind speed signal(s). If NULL, the main\cr
-#' signal is used.
+#' @param ws_signals character, names of wind speed signals.
 #' @param start_date character; start date in the format YYYY-MM-DD.
 #' @param end_date character; end date in the format YYYY-MM-DD.
 #' @param numeric_directions logical, if TRUE directions as numbers,\cr

@@ -1,6 +1,7 @@
-#' c_signal_summary
+#' Summary of one measurement signal
 #'
-#' Function presents a summary of one signal
+#' @description
+#' Function presents a summary of one signal in a table.
 #' @param cx c_mseries object with data and information about wind measurement\cr
 #' or a numeric vector.
 #' @param signal character, name of signal. If NULL, the main\cr

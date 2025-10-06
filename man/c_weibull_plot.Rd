@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_weibull_plot.R
 \name{c_weibull_plot}
 \alias{c_weibull_plot}
-\title{c_weibull_plot}
+\title{Weibull distribution plot}
 \usage{
 c_weibull_plot(
   cx = NULL,

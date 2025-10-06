@@ -1,5 +1,6 @@
-#' c_turbine
+#' Wind turbine object
 #'
+#' @description
 #' Create c_turbine object with basic information about a wind turbine.
 #' \itemize{
 #' \item name, a wind turbine name
@@ -187,4 +188,19 @@ plot.c_turbine <- function(x,
   axis(1, pretty(range(0, 30), 5))
   mtext(xlab, side = 1, col = "black", line = 2.5)
 
+}
+
+#' Test if the object is a c_turbine
+#'
+#' @description
+#' This function returns `TRUE` for c_turbine,
+#' and `FALSE` for all other objects.
+#'
+#' @param x An object
+#'
+#' @return `TRUE` if the object inherits from the `c_turbine` class.
+#'
+#' @export
+is_c_turbine <- function(x) {
+  inherits(x, "c_turbine")
 }

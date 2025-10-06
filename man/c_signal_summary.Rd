@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_signal_summary.R
 \name{c_signal_summary}
 \alias{c_signal_summary}
-\title{c_signal_summary}
+\title{Summary of one measurement signal}
 \usage{
 c_signal_summary(
   cx = NULL,
@@ -30,5 +30,5 @@ otherwise as months names}
 Function returns a tibble with a signal summary.
 }
 \description{
-Function presents a summary of one signal
+Function presents a summary of one signal in a table.
 }

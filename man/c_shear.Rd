@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_shear.R
 \name{c_shear}
 \alias{c_shear}
-\title{c_shear}
+\title{Directional wind shear}
 \usage{
 c_shear(
   cx = NULL,
@@ -16,8 +16,7 @@ c_shear(
 \item{cx}{c_mseries object with data and information about wind measurement\cr
 or a numeric vector.}
 
-\item{ws_signals}{character, name(s) of wind speed signal(s). If NULL, the main\cr
-signal is used.}
+\item{ws_signals}{character, names of wind speed signals.}
 
 \item{start_date}{character; start date in the format YYYY-MM-DD.}
 
@@ -30,7 +29,8 @@ otherwise as directions names}
 Function returns a tibble with wind shares values for 16 directions.
 }
 \description{
-Create a c_shear object
+Create a table with directional wind shear values for 16 sectors
+based on two measurement heights.
 }
 \examples{
 \dontrun{

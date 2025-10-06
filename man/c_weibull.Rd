@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_weibull.R
 \name{c_weibull}
 \alias{c_weibull}
-\title{c_weibull}
+\title{Weibull distribution}
 \usage{
 c_weibull(c, k, ws = 5, ro = 1.225, ...)
 }

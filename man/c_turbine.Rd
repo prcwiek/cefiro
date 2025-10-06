@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_turbine.R
 \name{c_turbine}
 \alias{c_turbine}
-\title{c_turbine}
+\title{Wind turbine object}
 \usage{
 c_turbine(
   name,

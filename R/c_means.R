@@ -1,4 +1,8 @@
-#' c_means
+#' Monthly means or Means of Monthyl Means
+#'
+#' @description
+#' Function create a table with monthly means for all or selected signals.
+#' It is also possible to create a table with means of monthly means.
 #'
 #' @param cx c_mseries object with data and information about wind measurement.\cr
 #' or a numeric vector.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/c_coverage.R
 \name{c_coverage}
 \alias{c_coverage}
-\title{c_coverage}
+\title{Measurement data coverage}
 \usage{
 c_coverage(
   cx = NULL,
