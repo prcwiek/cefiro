@@ -51,7 +51,7 @@ c_signal_summary <- function(cx = NULL, signal = NULL,
 
   # get all signals names or check if selected signals exist
   if (is.null(signal)) {
-    signals <- cx$main_wind_speed
+    signal <- cx$main_wind_speed
   } else if (sum(signal %in% signals_names) != length(signal)) {
     stop("cefiro package error: Invalid input! Signal does not exist in c_mseries object.",
          call. = FALSE)
