@@ -9,6 +9,7 @@
 #' @param ws_signals character, names of wind speed signals.
 #' @param start_date character; start date in the format YYYY-MM-DD.
 #' @param end_date character; end date in the format YYYY-MM-DD.
+#' @param ws_min numeric; minimal wind speed at the lower sensors
 #' @param numeric_directions logical, if TRUE directions as numbers,\cr
 #' otherwise as directions names
 #'
@@ -26,7 +27,7 @@
 #' @importFrom magrittr %>%
 #'
 #' @export
-c_shear <- function(cx = NULL, ws_signals = NULL,
+c_shear <- function(cx = NULL, ws_signals = NULL, ws_min = NULL,
                     start_date = NULL, end_date = NULL,
                     numeric_directions = TRUE) {
   # check if cx is c_mseries object
@@ -34,7 +35,7 @@ c_shear <- function(cx = NULL, ws_signals = NULL,
     stop("cefiro package error: Invalid input format! Argument is not c_mseries object.",
          call. = FALSE)
   }
-  # check if ws_signals si NULL
+  # check if ws_signals is NULL
   if (is.null(ws_signals)) {
     stop("cefiro package error: Invalid input format! Argument signals is not provided.",
          call. = FALSE)
@@ -61,10 +62,10 @@ c_shear <- function(cx = NULL, ws_signals = NULL,
     }
   }
 
-  # define shear function\
-  calculate_alpha <- function(w_low, w_high, h_low, h_high) {
-    log(w_high/w_low) / log(h_high/h_low)
-  }
+  # # define shear function
+  # calculate_alpha <- function(w_low, w_high, h_low, h_high) {
+  #   log(w_high/w_low) / log(h_high/h_low)
+  # }
 
   # get information about provided wind speed signals
   ws1_h <- as.numeric(cx$wind_speed[ws_signals[1]])
@@ -78,7 +79,7 @@ c_shear <- function(cx = NULL, ws_signals = NULL,
     rm(ws_temp)
   }
 
-  # getting signlas names
+  # getting signals names
   ws1_n <- names(cx$wind_speed[ws_signals[1]])
   ws2_n <- names(cx$wind_speed[ws_signals[2]])
   main_dir_n <- as.character(cx$main_wind_dir)
@@ -95,7 +96,7 @@ c_shear <- function(cx = NULL, ws_signals = NULL,
     cx <- cx$mdata[paste(start_date, end_date, sep = "/")]
   }
 
-  # get wind spped signals data
+  # get wind speed signals data
   ws1_data <- as.numeric(cx[, ws1_n])
   ws2_data <- as.numeric(cx[, ws2_n])
 
@@ -105,6 +106,10 @@ c_shear <- function(cx = NULL, ws_signals = NULL,
   # create a data set for calculations
   shear_input <- data.frame(ws1_data, ws2_data, main_dir_data) %>%
     dplyr::filter(complete.cases(.))
+
+  if (!is.null(ws_min)) {
+    shear_input <- dplyr::filter(shear_input, ws1_data >= ws_min)
+  }
 
 
   # initialize input vectors for .C call

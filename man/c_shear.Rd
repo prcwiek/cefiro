@@ -7,6 +7,7 @@
 c_shear(
   cx = NULL,
   ws_signals = NULL,
+  ws_min = NULL,
   start_date = NULL,
   end_date = NULL,
   numeric_directions = TRUE
@@ -17,6 +18,8 @@ c_shear(
 or a numeric vector.}
 
 \item{ws_signals}{character, names of wind speed signals.}
+
+\item{ws_min}{numeric; minimal wind speed at the lower sensors}
 
 \item{start_date}{character; start date in the format YYYY-MM-DD.}
 
