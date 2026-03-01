@@ -184,6 +184,22 @@ plot.c_turbine <- function(x,
     axis(4, ylim = c(0, 0.6), col = col_cp, col.axis = col_cp, las=1)
   }
 
+  if (plot_ct & plot_cp) {
+    par(new = TRUE)
+    plot(x$ws, x$ct,
+         col = col_ct,
+         pch = pch_ct,
+         type = type,
+         axes = FALSE,
+         xlim = c(0, 30),
+         ylim = c(0, 1),
+         xlab = "",
+         ylab = "")
+    mtext("Thrust coefficient Ct, Power coefficient Cp", side = 4, col = "black", line=3)
+    axis(4, ylim = c(0,1), col = col_ct, col.axis = col_ct, las=1)
+    lines(x$ws, x$cp, col = col_cp, pch =pch_cp)
+  }
+
   ## Draw the wind speed axis
   axis(1, pretty(range(0, 30), 5))
   mtext(xlab, side = 1, col = "black", line = 2.5)
