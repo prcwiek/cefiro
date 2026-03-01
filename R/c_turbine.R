@@ -38,8 +38,15 @@
 #'
 #' @return c_turbine object with information about a wind turbine
 #'
+#' @importFrom graphics hist axis box lines mtext par
+#'
 #' @examples
 #' \dontrun{
+#' c_turbine(name = "WTG", producer = "Producer", model = "Super 7.0MW",
+#' power = 7000, diameter = 180,
+#' hh = 125, cut_in = 3, cut_out = 25,
+#' ws = turbine$wind_speed, p = turbine$power, ct = turbine$ct,
+#' ro = 1.225)
 #' }
 #'
 #' @export

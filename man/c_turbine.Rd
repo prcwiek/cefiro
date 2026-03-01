@@ -78,6 +78,11 @@ Create c_turbine object with basic information about a wind turbine.
 }
 \examples{
 \dontrun{
+c_turbine(name = "WTG", producer = "Producer", model = "Super 7.0MW",
+power = 7000, diameter = 180,
+hh = 125, cut_in = 3, cut_out = 25,
+ws = turbine$wind_speed, p = turbine$power, ct = turbine$ct,
+ro = 1.225)
 }
 
 }

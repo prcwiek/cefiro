@@ -42,7 +42,7 @@
 #'
 #' @return c_mseries object with measurement data and information about a measurement site
 #'
-#' @importFrom graphics hist
+#' @importFrom graphics hist axis box lines mtext par
 #'
 #' @examples
 #' \dontrun{
