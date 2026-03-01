@@ -17,10 +17,17 @@ extern void signal_summary_c(int *n, int *n_unique_year_month,
                              double *coverage,
                              double *mean_values, double *min_values, double *max_values);
 
+extern void extrapolate_dir_shear_c(int *n,
+                                    double *ws, double *dir,
+                                    double *shear,
+                                    double *hl, double *he,
+                                    double *ws_extrapolated);
+
 static const R_CMethodDef cMethods[] = {
   {"calculate_shear_c", (DL_FUNC) &calculate_shear_c, 10},
   {"calculate_coverage_c", (DL_FUNC) &calculate_coverage_c, 6},
   {"signal_summary_c", (DL_FUNC) &signal_summary_c, 11},
+  {"extrapolate_dir_shear_c", (DL_FUNC) &extrapolate_dir_shear_c, 7},
   {NULL, NULL, 0}
 };
 

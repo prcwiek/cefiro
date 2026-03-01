@@ -8,15 +8,31 @@ module cefiro
 contains
 
 !**********************************************************
-!* Function fo  calculating wind shear aplha coefficient  *
+!* Function for calculating wind shear aplha coefficient  *
 !**********************************************************
   pure real(c_double) function calculate_alpha(w_low, w_high, h_low, h_high) result(res)
     real(c_double), intent(in) :: w_low, w_high
     real(c_double), intent(in) :: h_low, h_high
 
-    res = log(w_high/w_low) / log(h_high/h_low)
+    if (w_low > 0 .AND. w_high > 0) then
+      res = log(w_high/w_low) / log(h_high/h_low)
+    else
+      res = 0
+    end if
 
   end function calculate_alpha
+
+!**********************************************************
+!* Function for calculating extrapolated wind speed       *
+!**********************************************************
+  pure real(c_double) function extrapolate_wind_speed(w_low, h_low, h, alpha) result(res)
+    real(c_double), intent(in)  :: w_low
+    real(c_double), intent(in)  :: h_low, h
+    real(c_double), intent(in)  :: alpha
+
+    res = w_low * (h/h_low)**alpha
+
+  end function extrapolate_wind_speed
 
 !**********************************************************
 !* Single signal summary                                  *
@@ -136,6 +152,93 @@ contains
     end do
 
   end subroutine calculate_coverage
+
+!**********************************************************
+!* Extrapolate wind speed                               *
+!**********************************************************
+  subroutine extrapolate_dir_shear(n, ws, dir, shear, hl, he, ws_extrapolated) &
+  &bind(C, name = "extrapolate_dir_shear_c")
+    integer(c_int), intent(in)            :: n
+    real(c_double), intent(in)            :: ws(n), dir(n)
+    real(c_double), intent(in)            :: shear(16)
+    real(c_double), intent(in)            :: hl
+    real(c_double), intent(in)            :: he
+    real(c_double), intent(in out)        :: ws_extrapolated(n)
+
+    integer(c_int)                        :: i
+    real(c_double)                        :: alpha
+
+    !alpha = calculate_alpha(ws1(i), ws2(i), hl, hh)
+    do i = 1, n
+      if (ws(i) /= 7777 .and. dir(i) /= 7777) then
+        ! N
+        if ((dir(i) >= 0 .and. dir(i) < 11.25) .or. dir(i) > 348.75) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(1))
+        end if
+        ! NNW
+        if (dir(i) >= 11.25 .and. dir(i) < 33.75) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(2))
+        end if
+        ! NE
+        if (dir(i) >= 33.75 .and. dir(i) < 56.25) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(3))
+        end if
+        ! ENE
+        if (dir(i) >= 56.25 .and. dir(i) < 78.75) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(4))
+        end if
+        ! E
+        if (dir(i) >= 78.75 .and. dir(i) < 101.25) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(5))
+        end if
+        ! ESE
+        if (dir(i) >= 101.25 .and. dir(i) < 123.75) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(6))
+        end if
+        ! SE
+        if (dir(i) >= 123.75 .and. dir(i) < 146.25) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(7))
+        end if
+        ! SSE
+        if (dir(i) >= 146.25 .and. dir(i) < 168.75) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(8))
+        end if
+        ! S
+        if (dir(i) >= 168.75 .and. dir(i) < 191.25) then
+          ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(9))
+        end if
+        ! SSW
+        if (dir(i) >= 191.25 .and. dir(i) < 213.75) then
+            ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(10))
+        end if
+        ! SW
+        if (dir(i) >= 213.75 .and. dir(i) < 236.25) then
+            ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(11))
+        end if
+        ! WSW
+        if (dir(i) >= 236.25 .and. dir(i) < 258.75) then
+            ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(12))
+        end if
+        ! W
+        if (dir(i) >= 258.75.and. dir(i) < 281.25) then
+            ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(13))
+        end if
+        ! WNW
+        if (dir(i) >= 281.25 .and. dir(i) < 303.75) then
+            ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(14))
+        end if
+        ! NW
+        if (dir(i) >= 303.75 .and. dir(i) < 326.25) then
+            ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(15))
+        end if
+        ! NNW
+        if (dir(i) >= 326.25 .and. dir(i) < 348.75) then
+            ws_extrapolated(i) = extrapolate_wind_speed(ws(i), hl, he, shear(16))
+        end if
+      end if
+    end do
+
+  end subroutine extrapolate_dir_shear
 
 !**********************************************************
 !* Calculate shear from wind speeds at two level,         *
