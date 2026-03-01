@@ -70,20 +70,21 @@ c_shear <- function(cx = NULL, ws_signals = NULL, ws_min = NULL,
   # get information about provided wind speed signals
   ws1_h <- as.numeric(cx$wind_speed[ws_signals[1]])
   ws2_h <- as.numeric(cx$wind_speed[ws_signals[2]])
-
-  # check heights and switch if necessary
-  if (ws1_h > ws2_h) {
-    ws_temp <- ws1_h
-    ws1_h <- ws2_h
-    ws2_h <- ws_temp
-    rm(ws_temp)
-  }
-
-  # getting signals names
   ws1_n <- names(cx$wind_speed[ws_signals[1]])
   ws2_n <- names(cx$wind_speed[ws_signals[2]])
   main_dir_n <- as.character(cx$main_wind_dir)
   main_dir_h <- as.numeric(cx$wind_dir[cx$main_wind_dir])
+
+  # check heights and switch if necessary
+  if (ws1_h > ws2_h) {
+    w_temp <- ws1_h
+    ws1_h <- ws2_h
+    ws2_h <- w_temp
+    w_temp <- ws1_n
+    ws1_n <- ws2_n
+    ws2_n <- w_temp
+    rm(w_temp)
+  }
 
   # filter period
   if (is.null(start_date) & is.null(end_date)) {
