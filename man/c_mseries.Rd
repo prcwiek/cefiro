@@ -79,7 +79,7 @@ The output c_mseries object consists of:
 \item wind_dir, names and heights of measured wind direction signals
 \item wind_sd, names and heights of measured standard deviation
 \item temp, names and heights of temperature measured signals
-\item pressure, names and heights of winn speed measured signals
+\item pressure, names and heights of wind speed measured signals
 \item main_wind_speed, main wind speed measured signal
 \item wind_dir, main wind direction measured signals
 }

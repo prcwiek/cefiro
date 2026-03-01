@@ -12,7 +12,7 @@
 #' \item wind_dir, names and heights of measured wind direction signals
 #' \item wind_sd, names and heights of measured standard deviation
 #' \item temp, names and heights of temperature measured signals
-#' \item pressure, names and heights of winn speed measured signals
+#' \item pressure, names and heights of wind speed measured signals
 #' \item main_wind_speed, main wind speed measured signal
 #' \item wind_dir, main wind direction measured signals
 #' }
@@ -156,13 +156,13 @@ print.c_mseries <- function(x, ...) {
   cat(sprintf("Start date: %s \n", as.character(format(x$start_date, format = "%Y-%m-%d %H:%M:%S"))))
   cat(sprintf("End date: %s \n", as.character(format(x$end_date, format = "%Y-%m-%d %H:%M:%S"))))
   cat("------------------------------\n")
-  cat(sprintf("Wind speed signal %s measured at height: %.2f\n", names(x$wind_speed), unlist(unname(x$wind_speed))),
+  cat(sprintf("Wind speed signal %s at height: %.2f\n", names(x$wind_speed), unlist(unname(x$wind_speed))),
       sep = "")
-  cat(sprintf("Wind direction signal %s measured at height: %.2f\n", names(x$wind_dir), unlist(unname(x$wind_dir))),
+  cat(sprintf("Wind direction signal %s at height: %.2f\n", names(x$wind_dir), unlist(unname(x$wind_dir))),
       sep = "")
-  cat(sprintf("Temperature signal %s measured at height: %.2f\n", names(x$temp), unlist(unname(x$temp))),
+  cat(sprintf("Temperature signal %s at height: %.2f\n", names(x$temp), unlist(unname(x$temp))),
       sep = "")
-  cat(sprintf("Pressure signal %s measured at height: %.2f\n", names(x$pressure), unlist(unname(x$pressure))),
+  cat(sprintf("Pressure signal %s at height: %.2f\n", names(x$pressure), unlist(unname(x$pressure))),
       sep = "")
   cat("------------------------------\n")
   cat("Main wind speed signal ", x$main_wind_speed, "\n")
@@ -393,48 +393,58 @@ summary.c_mseries <- function(object, ...) {
   cat("Measurement time series: ", object$name," \n")
   cat(sprintf("Start date: %s \n", as.character(format(object$start_date, format = "%Y-%m-%d %H:%M:%S"))))
   cat(sprintf("End date: %s \n", as.character(format(object$end_date, format = "%Y-%m-%d %H:%M:%S"))))
-  for (item in names(object$wind_speed)) {
-    cat(sprintf("Wind speed %s: mean %.2f m/s, median %.2f m/s, min %.2f m/s, max %.2f m/s\n",
-                item,
-                mean(object, signal = item),
-                median(object, signal = item),
-                min(object, signal = item),
-                max(object, signal = item)),
-        sep = "")
+  if (!is.null(names(object$wind_speed))) {
+    for (item in names(object$wind_speed)) {
+      cat(sprintf("Wind speed %s: mean %.2f m/s, median %.2f m/s, min %.2f m/s, max %.2f m/s\n",
+                  item,
+                  mean(object, signal = item),
+                  median(object, signal = item),
+                  min(object, signal = item),
+                  max(object, signal = item)),
+          sep = "")
+    }
   }
-  for (item in names(object$wind_sd)) {
-    cat(sprintf("SD wind speed %s: mean %.2f m/s, median %.2f m/s, min %.2f m/s, max %.2f m/s\n",
-                item,
-                mean(object, signal = item),
-                median(object, signal = item),
-                min(object, signal = item),
-                max(object, signal = item)),
-        sep = "")
+  if (!is.null(names(object$wind_sd))) {
+    for (item in names(object$wind_sd)) {
+      cat(sprintf("SD wind speed %s: mean %.2f m/s, median %.2f m/s, min %.2f m/s, max %.2f m/s\n",
+                  item,
+                  mean(object, signal = item),
+                  median(object, signal = item),
+                  min(object, signal = item),
+                  max(object, signal = item)),
+          sep = "")
+    }
   }
-  for (item in names(object$wind_dir)) {
-    cat(sprintf("Wind direction %s: mean %.2f, median %.2f\n",
-                item,
-                mean(object, signal = item),
-                median(object, signal = item)),
-        sep = "")
+  if (!is.null(names(object$wind_dir))) {
+    for (item in names(object$wind_dir)) {
+      cat(sprintf("Wind direction %s: mean %.2f, median %.2f\n",
+                  item,
+                  mean(object, signal = item),
+                  median(object, signal = item)),
+          sep = "")
+    }
   }
-  for (item in names(object$temp)) {
-    cat(sprintf("Temperature %s: mean %.2f C, median %.2f C, min %.2f C, max %.2f C\n",
-                item,
-                mean(object, signal = item),
-                median(object, signal = item),
-                min(object, signal = item),
-                max(object, signal = item)),
-        sep = "")
+  if (!is.null(names(object$temp))) {
+    for (item in names(object$temp)) {
+      cat(sprintf("Temperature %s: mean %.2f C, median %.2f C, min %.2f C, max %.2f C\n",
+                  item,
+                  mean(object, signal = item),
+                  median(object, signal = item),
+                  min(object, signal = item),
+                  max(object, signal = item)),
+          sep = "")
+    }
   }
-  for (item in names(object$pressure)) {
-    cat(sprintf("Pressure %s: mean %.2f hPa, median %.2f hPa, min %.2f hPa, max %.2f hPa\n",
-                item,
-                mean(object, signal = item),
-                median(object, signal = item),
-                min(object, signal = item),
-                max(object, signal = item)),
-        sep = "")
+  if (!is.null(names(object$pressure))) {
+    for (item in names(object$pressure)) {
+      cat(sprintf("Pressure %s: mean %.2f hPa, median %.2f hPa, min %.2f hPa, max %.2f hPa\n",
+                  item,
+                  mean(object, signal = item),
+                  median(object, signal = item),
+                  min(object, signal = item),
+                  max(object, signal = item)),
+          sep = "")
+    }
   }
 }
 
