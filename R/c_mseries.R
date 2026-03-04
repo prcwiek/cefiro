@@ -98,8 +98,17 @@ c_mseries.default <- function(mdata = NULL, date_col = NULL,
     stop(paste0("cefiro package error: date_col = ", date_col, " does not exist!"), call. = FALSE)
   }
 
+  # combine all signals
+  all_cols <- c(date_col, ws_col, ws_sd_col, dir_col, dir_sd_col, t_col, p_col)
+
+  # check if columns exist in an input data frame
+  if (!(length(all_cols) == sum(all_cols %in% names(mdata)))) {
+    stop("cefiro package error: Columns names incorrect. Please verify provided names of signals!", call. = FALSE)
+  }
+
   # create time series
   mdata <- as.data.frame(mdata)
+  mdata <- mdata[, all_cols]
   t_index <-  mdata[, date_col]
   n_index <- names(mdata)[which(names(mdata) != date_col)]
   mdata <- subset(mdata, select = n_index)
@@ -135,7 +144,9 @@ c_mseries.default <- function(mdata = NULL, date_col = NULL,
     main_wind_dir <- wd_main
   }
 
-  structure(list(mdata = dout, t_index = t_index,
+  structure(list(mdata = dout,
+                 t_index = as.POSIXct(strftime(t_index, format = "%Y-%m-%d %H:%M:%S")),
+                 #t_index = format(t_index, format = "%Y-%m-%d %H:%M:%S"),
                  start_date = t_start, end_date = t_end,
                  wind_speed = wind_speed,
                  wind_dir = wind_dir,
@@ -155,6 +166,7 @@ print.c_mseries <- function(x, ...) {
   cat("Measurement time series: ", x$name," \n")
   cat(sprintf("Start date: %s \n", as.character(format(x$start_date, format = "%Y-%m-%d %H:%M:%S"))))
   cat(sprintf("End date: %s \n", as.character(format(x$end_date, format = "%Y-%m-%d %H:%M:%S"))))
+  cat(sprintf("Time zone: %s \n", x$tzone))
   cat("------------------------------\n")
   cat(sprintf("Wind speed signal %s at height: %.2f\n", names(x$wind_speed), unlist(unname(x$wind_speed))),
       sep = "")
@@ -393,6 +405,7 @@ summary.c_mseries <- function(object, ...) {
   cat("Measurement time series: ", object$name," \n")
   cat(sprintf("Start date: %s \n", as.character(format(object$start_date, format = "%Y-%m-%d %H:%M:%S"))))
   cat(sprintf("End date: %s \n", as.character(format(object$end_date, format = "%Y-%m-%d %H:%M:%S"))))
+  cat(sprintf("Time zone: %s \n", object$tzone))
   if (!is.null(names(object$wind_speed))) {
     for (item in names(object$wind_speed)) {
       cat(sprintf("Wind speed %s: mean %.2f m/s, median %.2f m/s, min %.2f m/s, max %.2f m/s\n",
