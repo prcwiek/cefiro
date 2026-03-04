@@ -62,11 +62,6 @@ c_shear <- function(cx = NULL, ws_signals = NULL, ws_min = NULL,
     }
   }
 
-  # # define shear function
-  # calculate_alpha <- function(w_low, w_high, h_low, h_high) {
-  #   log(w_high/w_low) / log(h_high/h_low)
-  # }
-
   # get information about provided wind speed signals
   ws1_h <- as.numeric(cx$wind_speed[ws_signals[1]])
   ws2_h <- as.numeric(cx$wind_speed[ws_signals[2]])
