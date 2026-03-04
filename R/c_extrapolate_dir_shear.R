@@ -75,10 +75,6 @@ c_extrapolate_dir_shear <- function(cx = NULL, ws_signal = NULL, dir_signal = NU
     }
   }
 
-  # get information about provided signals
-  # ws <- as.numeric(cx$wind_speed[ws_signal])
-  # dir <- as.numeric(cx$wind_dir[dir_signal])
-
   # get signals names
   ws_n <- names(cx$wind_speed[ws_signal])
   dir_n <- names(cx$wind_dir[dir_signal])
