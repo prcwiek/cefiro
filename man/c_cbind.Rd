@@ -7,9 +7,12 @@
 c_cbind(cx1 = NULL, cx2 = NULL)
 }
 \arguments{
-\item{cx1;}{first c_mseries object}
+\item{cx1}{c_mseries; primary object}
 
-\item{cx2;}{second c_mseries object}
+\item{cx2}{c_mseries; object to append}
+}
+\value{
+c_mseries object with data columns form c_mseries input objects
 }
 \description{
 Bind new columns of c_mseries objects

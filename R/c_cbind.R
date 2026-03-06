@@ -3,10 +3,12 @@
 #' @description
 #' Bind new columns of c_mseries objects
 #'
-#' @param cx1; first c_mseries object
-#' @param cx2; second c_mseries object
+#' @param cx1 c_mseries; primary object
+#' @param cx2 c_mseries; object to append
 #'
-#' @retrun c_mseries object with data columns form c_mseries input objects
+#' @return c_mseries object with data columns form c_mseries input objects
+#'
+#' @importFrom stats time
 #'
 #' @export
 c_cbind <- function(cx1 = NULL, cx2 = NULL) {
