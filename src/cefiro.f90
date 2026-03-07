@@ -5,6 +5,8 @@ module cefiro
   implicit none
   private
   public :: calculate_shear
+  public :: extrapolate_wind_speed
+
 contains
 
 !**********************************************************
