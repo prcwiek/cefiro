@@ -11,8 +11,8 @@ A data frame with 102816 rows and 10 variables
 A data set containing 10 minutes averages from 1998 to 1999
 }
 \details{
-From <https://ourairports.com>
-A data set is in the public domain according to <https://ourairports.com/data/>
+Wind resource data from the tall Risø met mast
+From <https://doi.org/10.11583/DTU.14153204>
 
 \itemize{
   \item DateTime; time stamp
@@ -28,7 +28,7 @@ A data set is in the public domain according to <https://ourairports.com/data/>
 }
 }
 \references{
-[https://doi.org/10.11583/DTU.c.5405286.v4](https://doi.org/10.11583/DTU.c.5405286.v4)
+[https://doi.org/10.11583/DTU.14153204](https://doi.org/10.11583/DTU.14153204)
 }
 \author{
 Kurt Schaldemose Hansen
