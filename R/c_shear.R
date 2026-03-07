@@ -109,7 +109,7 @@ c_shear <- function(cx = NULL, ws_signals = NULL, ws_min = NULL,
 
 
   # initialize input vectors for .C call
-  records_in <- rep(0,16)   # count of records in each of 16 sectors, from 0 to 337.5
+  records_in <- rep(0,16) # count of records in each of 16 sectors, from 0 to 337.5
   shear_in <- rep(0,16)   # average shear values in each secotr
   wsl_in <- rep(0,16)     # average wind speed values at  the lower level in each sector
   wsh_in <- rep(0,16)     # average wind speed values at  the lower level in each sector
