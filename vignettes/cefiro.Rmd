@@ -2,7 +2,7 @@
 title: "Simple Calculations and Plots for Wind Measurement Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{pmetar}
+  %\VignetteIndexEntry{cefiro}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
