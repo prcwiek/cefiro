@@ -5,7 +5,6 @@
 
 <!-- badges: start -->
 
-[![CRAN](https://www.r-pkg.org/badges/version/cefiro)](https://cran.r-project.org/package=cefiro)
 [![Not on
 CRAN](https://r-pkg.org/badges/version-ago/cefiro)](https://r-pkg.org/badges/version-ago/cefiro)
 [![R-CMD-check](https://github.com/prcwiek/cefiro/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/prcwiek/cefiro/actions/workflows/R-CMD-check.yaml)

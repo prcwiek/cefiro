@@ -11,6 +11,11 @@ Cefiro
 \author{
 \strong{Maintainer}: Pawel Cwiek \email{prc.altodato@gmail.com}
 
+Authors:
+\itemize{
+  \item Pawel Cwiek \email{prc.altodato@gmail.com}
+}
+
 Other contributors:
 \itemize{
   \item Kurt Schaldemose Hansen (Hansen, Kurt Schaldemose; Vasiljevic, Nikola; Sørensen, Steen Arne (2021). Wind resource data from the tall Risø met mast. Technical University of Denmark. Dataset. https://doi.org/10.11583/DTU.14153204.v1) [contributor]
