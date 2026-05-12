@@ -119,3 +119,4 @@ rsconnect/
 # ignore all files in a directory others
 others/
 inst/doc
+.positai
