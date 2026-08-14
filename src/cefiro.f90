@@ -168,7 +168,7 @@ contains
     real(c_double), intent(in out)        :: ws_extrapolated(n)
 
     integer(c_int)                        :: i
-    real(c_double)                        :: alpha
+    !real(c_double)                        :: alpha
 
     !alpha = calculate_alpha(ws1(i), ws2(i), hl, hh)
     do i = 1, n
