@@ -120,3 +120,9 @@ rsconnect/
 others/
 inst/doc
 .positai
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
